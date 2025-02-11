@@ -3,7 +3,7 @@ import { contactUsData } from "../../utils/ContactUsData";
 
 export default function ContactUs() {
   return (
-    <div className="w-[70%] mx-auto ">
+    <div className="w-[80%] mx-auto ">
       <h1 className="text-center text-4xl mb-5 font-semibold">Contact Us</h1>
       <p className="text-center">
         Feel free to reach out to us for any inquiries or assistance.

@@ -3,6 +3,7 @@ import Hero from "../components/home/Hero";
 import Services from "../components/home/Services";
 import Banner from "../components/home/Banner";
 import ContactUs from "../components/home/ContactUs";
+import Footer from "../components/home/Footer";
 const HomePage: React.FC = () => {
   return (
     <div>
@@ -13,6 +14,9 @@ const HomePage: React.FC = () => {
       <Banner />
       <div className="my-20"></div>
       <ContactUs />
+      <div className="my-20"></div>
+      <hr className="border-black border-t-2" />
+      <Footer />
     </div>
   );
 };

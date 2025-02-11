@@ -10,7 +10,7 @@ export default function Hero() {
         maxHeight: "calc(100vh - 80px)",
       }}
     >
-      <h1 className="text-[50px] font-semibold text-shadow-lg ">
+      <h1 className="text-[50px] font-semibold text-shadow-lg">
         Get Expert Consultation Online
       </h1>
       <p className="text-lg font-medium text-center max-w-[80%] text-shadow-lg">
