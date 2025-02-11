@@ -13,17 +13,17 @@ export default function Hero() {
       <h1 className="text-[50px] font-semibold text-shadow-lg">
         Get Expert Consultation Online
       </h1>
-      <p className="text-lg font-medium text-center max-w-[80%] text-shadow-lg">
+      <p className="text-2xl font-medium text-center max-w-[80%] text-shadow-lg-dark">
         Select from a variety of services such as Electronics, Hotels, and
         Automobiles. Choose your preferred consultant and have a video
         consultation through our inbuilt feature. Leave a review after your
         session!
       </p>
       <div className="flex gap-10">
-        <button className="bg-primaryRed text-white py-2 px-5 font-semibold hover:bg-black hover:text-white transition-all duration-300">
+        <button className="bg-primaryRed text-white py-2 px-5 font-semibold hover:bg-primaryRed/90 hover:text-white transition-all duration-300">
           Browse Services
         </button>
-        <button className="text-white border-white border-2 py-[6px] px-3 font-semibold hover:bg-black hover:border-black hover:text-white transition-all duration-300 shadow-lg">
+        <button className="text-white bg-black border-black border-2 py-[6px] px-3 font-semibold hover:bg-gray-800 hover:border-gray-800 hover:text-white transition-all duration-300 shadow-lg">
           Become a Consultant
         </button>
       </div>

@@ -1,11 +1,14 @@
-import { BsInstagram, BsTwitter, BsLinkedin } from "react-icons/bs";
-import { MdFacebook } from "react-icons/md";
+import { BsInstagram, BsTwitter, BsLinkedin, BsFacebook } from "react-icons/bs";
+import { Icons } from "../../resources/Icons";
 
 export default function Footer() {
   return (
-    <div className="w-[80%] mx-auto flex justify-between gap-16 items-center my-20">
-      <div className="w-[50%] flex flex-col gap-6">
-        <h1 className="text-3xl font-semibold">Onilne Consulting</h1>
+    <div className="w-[80%] mx-auto flex flex-col lg:flex-row justify-between gap-16 items-center my-20">
+      <div className="w-full lg:w-[50%] flex flex-col gap-6">
+        <h1 className="text-3xl font-semibold flex items-center gap-2">
+          <img src={Icons.logo2} alt="Logo" className="w-10 h-10" />
+          Online Consulting
+        </h1>
         <p>
           Subscribe to our newsletter for the latest updates on new features and
           product releases.
@@ -22,8 +25,8 @@ export default function Footer() {
         </div>
         <p>© 2023 Online Consulting. All rights reserved.</p>
       </div>
-      <div className="flex justify-between w-[50%]">
-        <div className=" flex flex-col gap-6">
+      <div className="w-full lg:w-[50%] flex flex-wrap max-md:gap-5 items-center justify-between">
+        <div className="flex flex-col gap-6">
           <h1 className="text-2xl font-semibold">Company</h1>
           <ul>
             <li className="hover:text-primaryRed transition-all duration-300 cursor-pointer text-lg mb-2">
@@ -40,7 +43,7 @@ export default function Footer() {
             </li>
           </ul>
         </div>
-        <div className=" flex flex-col gap-6">
+        <div className="flex flex-col gap-6">
           <h1 className="text-2xl font-semibold">Policies</h1>
           <ul>
             <li className="hover:text-primaryRed transition-all duration-300 cursor-pointer text-lg mb-2">
@@ -57,11 +60,11 @@ export default function Footer() {
             </li>
           </ul>
         </div>
-        <div className=" flex flex-col gap-6">
+        <div className="flex flex-col gap-6">
           <h1 className="text-2xl font-semibold">Follow Us</h1>
           <ul>
             <li className="hover:text-primaryRed transition-all duration-300 cursor-pointer text-lg mb-2 flex items-center gap-2">
-              <MdFacebook size={25} /> Facebook
+              <BsFacebook size={20} /> Facebook
             </li>
             <li className="hover:text-primaryRed transition-all duration-300 cursor-pointer text-lg mb-2 flex items-center gap-2">
               <BsInstagram size={20} /> Instagram
