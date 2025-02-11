@@ -1,21 +1,22 @@
 // import { MdPerson } from "react-icons/md";
-import { Images } from "../../resources/Images";
-
+import { Link } from "react-router-dom";
+import { Icons } from "../../resources/Icons";
+import { Routes } from "../../utils/Routes";
 export default function Header() {
   return (
     <header className="flex justify-between items-center px-10 sticky top-0 z-10 bg-white shadow-md">
       <div className="flex gap-10 font-semibold  items-center">
         <div className="w-12 h-20">
-          <img src={Images.logo2} alt="logo" className="w-full h-full" />
+          <img src={Icons.logo2} alt="logo" className="w-full h-full" />
         </div>
         <p className="hover:text-primaryRed cursor-pointer transition-all duration-300 ">
-          Home
+          <Link to={Routes.home}>Home</Link>
         </p>
         <p className="hover:text-primaryRed cursor-pointer transition-all duration-300">
           Services
         </p>
         <p className="hover:text-primaryRed cursor-pointer transition-all duration-300">
-          About Us
+          <Link to={Routes.about}>About Us</Link>
         </p>
         <p className="hover:text-primaryRed cursor-pointer transition-all duration-300">
           Contact Us
@@ -27,12 +28,18 @@ export default function Header() {
       </div> */}
 
       <div className="flex gap-10">
-        <button className="bg-primaryRed text-white py-2 px-5 font-semibold hover:bg-black hover:text-white transition-all duration-300">
+        <Link
+          to={Routes.login}
+          className="bg-primaryRed text-white py-2 px-5 font-semibold hover:bg-black hover:text-white transition-all duration-300"
+        >
           Login
-        </button>
-        <button className="text-primaryRed border-primaryRed border-2 py-[6px] px-3 font-semibold hover:bg-black hover:border-black hover:text-white transition-all duration-300">
+        </Link>
+        <Link
+          to={Routes.signup}
+          className="text-primaryRed border-primaryRed border-2 py-[6px] px-3 font-semibold hover:bg-black hover:border-black hover:text-white transition-all duration-300"
+        >
           Sign Up
-        </button>
+        </Link>
       </div>
     </header>
   );
