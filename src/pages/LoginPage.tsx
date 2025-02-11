@@ -1,16 +1,75 @@
 import { useState } from "react";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Routes } from "../utils/Routes";
 import { Icons } from "../resources/Icons";
 import PrimaryAuthButton from "../components/common/PrimaryAuthButton";
+import { googleLogin, login } from "../core/services/AuthService";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const validate = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!email) newErrors.email = "Email is required";
+    if (!email.includes("@")) newErrors.email = "Invalid email address";
+    if (!password) newErrors.password = "Password is required";
+    return newErrors;
+  };
+
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    const success = await googleLogin();
+    if (success) {
+      toast.success("Login successful", {
+        position: "bottom-right",
+      });
+      navigate(Routes.home);
+    }
+    setIsLoading(false);
+  };
+
+  const handleLogin = async () => {
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      setTimeout(() => setErrors({}), 3000);
+      return;
+    }
+    setIsLoading(true);
+    const success = await login(email, password);
+    if (success && success?.user.emailVerified) {
+      toast.success("Login successful", {
+        position: "bottom-right",
+      });
+      navigate(Routes.home);
+    } else if (success && !success?.user.emailVerified) {
+      toast.error("Please verify your email", {
+        position: "bottom-right",
+      });
+    } else {
+      toast.error("Invalid Credentials", {
+        position: "bottom-right",
+      });
+    }
+    setIsLoading(false);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === "Enter") {
+      handleLogin();
+    }
   };
 
   return (
@@ -26,7 +85,7 @@ export default function LoginPage() {
           Welcome Back
         </h2>
 
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onKeyDown={handleKeyPress}>
           <div className="relative">
             <FaUser className="absolute left-3 top-4 text-gray-400" />
             <input
@@ -36,6 +95,9 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            )}
           </div>
 
           <div className="relative">
@@ -53,9 +115,16 @@ export default function LoginPage() {
             >
               {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
             </div>
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+            )}
           </div>
 
-          <PrimaryAuthButton text="Login" />
+          <PrimaryAuthButton
+            text="Login"
+            isLoading={isLoading}
+            onClick={handleLogin}
+          />
 
           <div className="flex justify-between text-sm mt-2">
             <Link to="#" className=" hover:text-[#ed2a4f]">
@@ -80,6 +149,7 @@ export default function LoginPage() {
 
           <div className="flex items-center justify-center">
             <img
+              onClick={handleGoogleLogin}
               src={Icons.google}
               alt="google"
               className="w-10 h-10 cursor-pointer"

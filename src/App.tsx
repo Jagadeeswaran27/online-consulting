@@ -6,6 +6,8 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import AuthContextProvider from "./store/context/AuthContext";
 import ProtectedRoute from "./store/protection/ProtectedRoute";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function App() {
   return (
     <AuthContextProvider>
@@ -22,6 +24,7 @@ export default function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      <ToastContainer />
     </AuthContextProvider>
   );
 }
