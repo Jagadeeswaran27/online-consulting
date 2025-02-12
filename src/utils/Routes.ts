@@ -3,4 +3,5 @@ export const Routes = {
   login: "/login",
   signup: "/signup",
   about: "/about",
+  services: "/services",
 };

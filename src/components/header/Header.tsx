@@ -36,21 +36,23 @@ export default function Header() {
             <Link to={Routes.home}>Home</Link>
           </p>
           <p className="hover:text-primaryRed cursor-pointer transition-all duration-300">
-            Services
-          </p>
-          <p className="hover:text-primaryRed cursor-pointer transition-all duration-300">
             <Link to={Routes.about}>About Us</Link>
           </p>
           <p className="hover:text-primaryRed cursor-pointer transition-all duration-300">
-            Contact Us
+            <Link to={Routes.services}>Services</Link>
+          </p>
+          <p className="hover:text-primaryRed cursor-pointer transition-all duration-300">
+            Our Consultants
           </p>
         </nav>
       </div>
       <div className="hidden md:flex gap-10 items-center">
         {user ? (
           <>
-            <MdPerson size={30} />
-            <p className="text-lg font-semibold">Hello, {user.userName}</p>
+            <div className="flex items-center gap-2">
+              <MdPerson size={30} />
+              <p className="text-lg font-semibold">Hello, {user.userName}</p>
+            </div>
             <button
               className="bg-primaryRed text-white py-2 px-5 font-semibold hover:bg-black hover:text-white transition-all duration-300"
               onClick={handleLogout}
@@ -78,8 +80,8 @@ export default function Header() {
 
       {isMenuOpen && (
         <div className="fixed top-0 left-0 w-full h-full bg-white shadow-lg z-20 px-5">
-          <div className="flex justify-between items-center mb-5">
-            <div className="w-12 pt-5">
+          <div className="flex justify-between items-center mb-10">
+            <div className="w-12 pt-10">
               <img src={Icons.logo2} alt="logo" className="w-full h-full" />
             </div>
             <button onClick={toggleMenu}>
