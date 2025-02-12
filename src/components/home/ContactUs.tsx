@@ -3,12 +3,12 @@ import { contactUsData } from "../../utils/ContactUsData";
 
 export default function ContactUs() {
   return (
-    <div className="w-[70%] mx-auto ">
+    <div className="w-[80%] mx-auto ">
       <h1 className="text-center text-4xl mb-5 font-semibold">Contact Us</h1>
       <p className="text-center">
         Feel free to reach out to us for any inquiries or assistance.
       </p>
-      <div className="flex flex-col md:flex-row justify-between gap-10 my-10">
+      <div className="flex flex-col md:flex-row justify-between gap-10 my-10 mt-16">
         {contactUsData.map((item) => (
           <div className="flex flex-col gap-6 items-center justify-between">
             {item.title === "Email" && <MdEmail size={50} />}
