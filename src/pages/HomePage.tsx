@@ -4,6 +4,7 @@ import Services from "../components/home/Services";
 import Banner from "../components/home/Banner";
 import ContactUs from "../components/home/ContactUs";
 import Footer from "../components/home/Footer";
+
 const HomePage: React.FC = () => {
   return (
     <div>
