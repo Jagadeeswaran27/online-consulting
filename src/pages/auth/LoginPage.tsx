@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { Routes } from "../utils/Routes";
-import { Icons } from "../resources/Icons";
-import PrimaryAuthButton from "../components/common/PrimaryAuthButton";
-import { googleLogin, login } from "../core/services/AuthService";
+import { Routes } from "../../utils/Routes";
+import { Icons } from "../../resources/Icons";
+import PrimaryAuthButton from "../../components/common/PrimaryAuthButton";
+import { googleLogin, login } from "../../core/services/AuthService";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { User } from "../../types/Auth";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -28,16 +29,36 @@ export default function LoginPage() {
     return newErrors;
   };
 
-  const handleGoogleLogin = async () => {
-    setIsLoading(true);
-    const success = await googleLogin();
-    if (success) {
+  const handleRedirect = (user: User) => {
+    if (user.type === "admin") {
+      toast.success("Login successful", {
+        position: "bottom-right",
+      });
+      navigate(Routes.adminDashboard);
+    } else if (user.type === "consultant") {
+      toast.success("Login successful", {
+        position: "bottom-right",
+      });
+      navigate(Routes.consultantDashboard);
+    } else {
       toast.success("Login successful", {
         position: "bottom-right",
       });
       navigate(Routes.home);
     }
-    setIsLoading(false);
+  };
+
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    const user = await googleLogin();
+    if (user) {
+      handleRedirect(user);
+    } else {
+      toast.error("Invalid Credentials", {
+        position: "bottom-right",
+      });
+      setIsLoading(false);
+    }
   };
 
   const handleLogin = async () => {
@@ -49,12 +70,11 @@ export default function LoginPage() {
     }
     setIsLoading(true);
     const success = await login(email, password);
-    if (success && success?.user.emailVerified) {
-      toast.success("Login successful", {
-        position: "bottom-right",
-      });
-      navigate(Routes.home);
-    } else if (success && !success?.user.emailVerified) {
+    const user = success?.user as User | undefined;
+
+    if (success && success.user.emailVerified && user) {
+      handleRedirect(user);
+    } else if (success && !success.user.emailVerified) {
       toast.error("Please verify your email", {
         position: "bottom-right",
       });

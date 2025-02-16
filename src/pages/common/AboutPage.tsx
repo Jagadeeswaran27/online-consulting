@@ -1,5 +1,5 @@
-import { Images } from "../resources/Images";
-import SplitText from "../text-animations/SplitText/SplitText";
+import { Images } from "../../resources/Images";
+import SplitText from "../../text-animations/SplitText/SplitText";
 export default function AboutPage() {
   return (
     <div>
