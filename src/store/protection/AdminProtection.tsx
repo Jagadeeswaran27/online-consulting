@@ -3,12 +3,12 @@ import { AuthContext } from "../context/auth";
 import { Navigate } from "react-router-dom";
 import { Routes } from "../../utils/Routes";
 import Lottie from "lottie-react";
-import { Animations } from "../../resources/Animations";
-interface ProtectedRouteProps {
+import loadingAnimation from "../../assets/animations/loading.json";
+interface AdminProtectionProps {
   element: React.ReactElement;
 }
 
-export default function ProtectedRoute({ element }: ProtectedRouteProps) {
+export default function AdminProtection({ element }: AdminProtectionProps) {
   const { user, loading } = useContext(AuthContext);
 
   if (loading) {
@@ -21,7 +21,7 @@ export default function ProtectedRoute({ element }: ProtectedRouteProps) {
         }}
       >
         <Lottie
-          animationData={Animations.loadingAnimation}
+          animationData={loadingAnimation}
           loop={true}
           className="w-48 h-48 md:w-72 md:h-72"
         />
@@ -29,7 +29,7 @@ export default function ProtectedRoute({ element }: ProtectedRouteProps) {
     );
   }
 
-  if (!user) {
+  if (!user || user.type !== "admin") {
     return <Navigate to={Routes.login} />;
   }
 

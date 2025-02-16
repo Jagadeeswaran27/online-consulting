@@ -1,9 +1,9 @@
 import React from "react";
-import Hero from "../components/home/Hero";
-import Services from "../components/home/Services";
-import Banner from "../components/home/Banner";
-import ContactUs from "../components/home/ContactUs";
-import Footer from "../components/home/Footer";
+import Hero from "../../components/home/Hero";
+import Services from "../../components/home/Services";
+import Banner from "../../components/home/Banner";
+import ContactUs from "../../components/home/ContactUs";
+import Footer from "../../components/home/Footer";
 
 const HomePage: React.FC = () => {
   return (

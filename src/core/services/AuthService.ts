@@ -62,17 +62,19 @@ export const logout = async () => {
   await signOut(auth);
 };
 
-export const googleLogin = async () => {
+export const googleLogin = async (): Promise<User | null> => {
   const provider = new GoogleAuthProvider();
   const userCredential = await signInWithPopup(auth, provider);
   if (userCredential.user) {
     const userDocRef = doc(db, "users", userCredential.user.uid);
     const userDoc = await getDoc(userDocRef);
 
+    let user: User | null = null;
+
     let userType = "user";
     if (userDoc.exists()) {
-      const userData = userDoc.data() as User;
-      userType = userData.type;
+      user = userDoc.data() as User;
+      userType = user.type;
     }
 
     await setDoc(
@@ -86,9 +88,9 @@ export const googleLogin = async () => {
       { merge: true }
     );
 
-    return true;
+    return user;
   }
-  return false;
+  return null;
 };
 
 export const getUser = async (): Promise<User | null> => {

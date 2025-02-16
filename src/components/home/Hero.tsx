@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import { Images } from "../../resources/Images";
+import { Routes } from "../../utils/Routes";
 
 export default function Hero() {
   return (
@@ -20,9 +22,12 @@ export default function Hero() {
         session!
       </p>
       <div className="flex gap-10">
-        <button className="bg-primaryRed text-white py-2 px-5 font-semibold hover:bg-primaryRed/90 hover:text-white transition-all duration-300">
+        <Link
+          to={Routes.services}
+          className="bg-primaryRed text-white py-2 px-5 font-semibold hover:bg-primaryRed/90 hover:text-white transition-all duration-300"
+        >
           Browse Services
-        </button>
+        </Link>
         <button className="text-white bg-black border-black border-2 py-[6px] px-3 font-semibold hover:bg-gray-800 hover:border-gray-800 hover:text-white transition-all duration-300 shadow-lg">
           Become a Consultant
         </button>
