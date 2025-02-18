@@ -106,7 +106,7 @@ export default function SignupPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="w-full max-w-md p-8 rounded-xl bg-white shadow-[0px_4px_20px_rgba(0,0,0,0.2)]">
+      <div className="w-full max-w-md p-8 rounded-xl dark:bg-darkThemeCard shadow-[0px_4px_20px_rgba(0,0,0,0.2)]">
         <h2 className=" text-3xl font-semibold text-center mb-6">
           Create Account
         </h2>
@@ -117,7 +117,7 @@ export default function SignupPage() {
             <input
               type="text"
               placeholder="Username"
-              className="w-full px-10 py-3 border border-gray-600 rounded-lg focus:outline-none "
+              className="w-full px-10 py-3 border border-gray-600 bg-darkThemeSecondary rounded-lg focus:outline-none "
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
@@ -131,7 +131,7 @@ export default function SignupPage() {
             <input
               type="email"
               placeholder="Email"
-              className="w-full px-10 py-3 border border-gray-600 rounded-lg focus:outline-none "
+              className="w-full px-10 py-3 border border-gray-600 bg-darkThemeSecondary rounded-lg focus:outline-none "
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -145,7 +145,7 @@ export default function SignupPage() {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
-              className="w-full px-10 py-3 border border-gray-600 rounded-lg focus:outline-none "
+              className="w-full px-10 py-3 border border-gray-600 bg-darkThemeSecondary rounded-lg focus:outline-none "
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -165,7 +165,7 @@ export default function SignupPage() {
             <input
               type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm Password"
-              className="w-full px-10 py-3 border border-gray-600 rounded-lg focus:outline-none "
+              className="w-full px-10 py-3 border border-gray-600 bg-darkThemeSecondary rounded-lg focus:outline-none "
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />

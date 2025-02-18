@@ -9,14 +9,17 @@ export default function ContactUs() {
         Feel free to reach out to us for any inquiries or assistance.
       </p>
       <div className="flex flex-col md:flex-row justify-between gap-10 my-10 mt-16">
-        {contactUsData.map((item) => (
-          <div className="flex flex-col gap-6 items-center justify-between">
-            {item.title === "Email" && <MdEmail size={50} />}
-            {item.title === "Phone" && <MdPhone size={50} />}
-            {item.title === "Location" && <MdLocationOn size={50} />}
-            <h2 className="text-3xl">{item.title}</h2>
-            <p className="text-center text-lg">{item.description}</p>
-            <p>{item.link}</p>
+        {contactUsData.map((data) => (
+          <div
+            key={data.title}
+            className="flex flex-col gap-6 items-center justify-between"
+          >
+            {data.title === "Email" && <MdEmail size={50} />}
+            {data.title === "Phone" && <MdPhone size={50} />}
+            {data.title === "Location" && <MdLocationOn size={50} />}
+            <h2 className="text-3xl">{data.title}</h2>
+            <p className="text-center text-lg">{data.description}</p>
+            <p>{data.link}</p>
           </div>
         ))}
       </div>

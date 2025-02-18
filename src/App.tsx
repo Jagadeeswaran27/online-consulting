@@ -16,6 +16,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminProtection from "./store/protection/AdminProtection";
 import RedirectAuthenticated from "./store/protection/RedirectAuthenticated";
 import Error404 from "./pages/auth/Error404";
+import SettingsPage from "./pages/common/SettingsPage";
 
 export default function App() {
   return (
@@ -45,6 +46,10 @@ export default function App() {
             <Route
               path={AppRoutes.adminDashboard}
               element={<AdminProtection element={<AdminDashboard />} />}
+            />
+            <Route
+              path={AppRoutes.settings}
+              element={<ProtectedRoute element={<SettingsPage />} />}
             />
             <Route path="*" element={<Error404 />} />
           </Route>

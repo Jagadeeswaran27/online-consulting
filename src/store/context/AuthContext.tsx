@@ -4,6 +4,8 @@ import { auth } from "../../core/config/Firebase";
 import { AuthContext } from "./auth";
 import { getUser } from "../../core/services/AuthService";
 import { User } from "../../types/Auth";
+import { getInitialTheme } from "../../utils/Helper";
+import { Theme } from "../../types/Settings";
 
 export default function AuthContextProvider({
   children,
@@ -12,6 +14,7 @@ export default function AuthContextProvider({
 }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [theme, setTheme] = useState<Theme>(getInitialTheme);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -28,8 +31,20 @@ export default function AuthContextProvider({
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark" as Theme);
+    } else {
+      document.documentElement.classList.remove("dark" as Theme);
+    }
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, loading, toggleTheme, theme }}>
       {children}
     </AuthContext.Provider>
   );

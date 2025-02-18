@@ -3,7 +3,7 @@ import SplitText from "../../text-animations/SplitText/SplitText";
 export default function AboutPage() {
   return (
     <div>
-      <div className="my-20 w-[90%] mx-auto">
+      <div className="py-20 w-[90%] mx-auto">
         <SplitText
           text="Our Mission"
           className="text-4xl font-semibold my-10 text-right md:text-left"
@@ -12,7 +12,7 @@ export default function AboutPage() {
           <img
             src={Images.ourMission}
             alt="Our Mission"
-            className="w-full md:w-[25%] h-auto"
+            className="w-full md:w-[25%] h-auto dark:mix-blend-lighten"
           />
           <p className="text-lg text-left mb-10">
             Our mission is to provide expert consultation services online,

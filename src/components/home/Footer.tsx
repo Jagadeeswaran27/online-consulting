@@ -3,7 +3,7 @@ import { Icons } from "../../resources/Icons";
 
 export default function Footer() {
   return (
-    <div className="w-[80%] mx-auto flex flex-col lg:flex-row justify-between gap-16 items-center my-20">
+    <div className="w-[80%] mx-auto flex flex-col lg:flex-row justify-between gap-16 items-center py-20">
       <div className="w-full lg:w-[50%] flex flex-col gap-6">
         <h1 className="text-3xl font-semibold flex items-center gap-2">
           <img src={Icons.logo2} alt="Logo" className="w-10 h-10" />
@@ -17,7 +17,7 @@ export default function Footer() {
           <input
             type="text"
             placeholder="Enter your email"
-            className="border border-black p-[6px] flex-grow"
+            className="w-full px-5 py-3 border border-gray-600 dark:bg-darkThemeSecondary focus:outline-none flex-grow"
           />
           <button className="text-primaryRed border-primaryRed border-2 py-[6px] px-3 font-semibold hover:bg-black hover:border-black hover:text-white transition-all duration-300">
             Subscribe

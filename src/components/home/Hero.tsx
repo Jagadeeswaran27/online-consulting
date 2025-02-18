@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import { Images } from "../../resources/Images";
 import { Routes } from "../../utils/Routes";
+import { useContext } from "react";
+import { AuthContext } from "../../store/context/auth";
 
 export default function Hero() {
+  const { user } = useContext(AuthContext);
   return (
     <div
       className="flex flex-col text-white gap-10 items-center justify-center py-20 "
@@ -21,17 +24,29 @@ export default function Hero() {
         consultation through our inbuilt feature. Leave a review after your
         session!
       </p>
-      <div className="flex gap-10">
+      {user?.type !== "admin" ? (
+        <div className="flex gap-10">
+          <Link
+            to={Routes.services}
+            className="bg-primaryRed text-white py-2 px-5 font-semibold hover:bg-secondaryRed hover:text-white transition-all duration-300"
+          >
+            Browse Services
+          </Link>
+          <Link
+            to={Routes.consultantSignup}
+            className="text-white bg-black border-black border-2 py-[6px] px-3 font-semibold hover:bg-darkThemeSecondary hover:border-gray-800 hover:text-white transition-all duration-300 shadow-lg"
+          >
+            Become a Consultant
+          </Link>
+        </div>
+      ) : (
         <Link
-          to={Routes.services}
-          className="bg-primaryRed text-white py-2 px-5 font-semibold hover:bg-primaryRed/90 hover:text-white transition-all duration-300"
+          to={Routes.adminDashboard}
+          className="bg-primaryRed text-white py-2 px-5 font-semibold hover:bg-secondaryRed hover:text-white transition-all duration-300"
         >
-          Browse Services
+          Go to Dashboard
         </Link>
-        <button className="text-white bg-black border-black border-2 py-[6px] px-3 font-semibold hover:bg-gray-800 hover:border-gray-800 hover:text-white transition-all duration-300 shadow-lg">
-          Become a Consultant
-        </button>
-      </div>
+      )}
     </div>
   );
 }

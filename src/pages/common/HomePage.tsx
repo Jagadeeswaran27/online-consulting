@@ -16,7 +16,7 @@ const HomePage: React.FC = () => {
       <div className="my-20"></div>
       <ContactUs />
       <div className="my-20"></div>
-      <hr className="border-black border-t-2" />
+      <hr className="border-black dark:border-gray-500 border-t-2" />
       <Footer />
     </div>
   );

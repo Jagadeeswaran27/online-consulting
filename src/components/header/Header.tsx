@@ -1,15 +1,16 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Icons } from "../../resources/Icons";
 import { Routes } from "../../utils/Routes";
 import { useContext, useState } from "react";
-import { AuthContext } from "../../store/context/auth";
 import { MdPerson, MdMenu, MdClose } from "react-icons/md";
 import { logout } from "../../core/services/AuthService";
+import { AuthContext } from "../../store/context/auth";
 
 export default function Header() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
 
   const handleLogout = () => {
     logout();
@@ -21,7 +22,7 @@ export default function Header() {
   };
 
   return (
-    <header className="flex justify-between items-center px-10 sticky top-0 z-10 bg-white shadow-md">
+    <header className="flex justify-between items-center px-10 sticky top-0 z-10 dark:bg-darkTheme dark:border-gray-500 dark:border-b-2 bg-white shadow-md">
       <div className="flex gap-10 font-semibold items-center">
         <div className="w-12 h-20 max-md:hidden">
           <img src={Icons.logo2} alt="logo" className="w-full h-full" />
@@ -49,28 +50,35 @@ export default function Header() {
       <div className="hidden md:flex gap-10 items-center">
         {user ? (
           <>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center">
               <MdPerson size={30} />
-              <p className="text-lg font-semibold">Hello, {user.userName}</p>
+              <p className="text-lg ml-2 font-semibold">
+                {user.type === "admin"
+                  ? "Hello, Admin"
+                  : "Hello, " + user.userName}
+              </p>
             </div>
-            <button
-              className="bg-primaryRed text-white py-2 px-5 font-semibold hover:bg-black hover:text-white transition-all duration-300"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
+            {location.pathname !== Routes.settings && (
+              <Link to={Routes.settings}>
+                <img
+                  src={Icons.settings}
+                  alt="settings"
+                  className="w-7 h-7 dark:invert"
+                />
+              </Link>
+            )}
           </>
         ) : (
           <>
             <Link
               to={Routes.login}
-              className="bg-primaryRed text-white py-2 px-5 font-semibold hover:bg-black hover:text-white transition-all duration-300"
+              className="bg-primaryRed text-white py-2 px-5 font-semibold hover:bg-secondaryRed hover:text-white transition-all duration-300"
             >
               Login
             </Link>
             <Link
               to={Routes.signup}
-              className="text-primaryRed border-primaryRed border-2 py-[6px] px-3 font-semibold hover:bg-black hover:border-black hover:text-white transition-all duration-300"
+              className="text-primaryRed border-primaryRed border-2 py-[6px] px-3 font-semibold hover:bg-secondaryRed hover:border-black hover:text-white transition-all duration-300"
             >
               Sign Up
             </Link>
@@ -110,7 +118,9 @@ export default function Header() {
                 <div className="flex items-center gap-3">
                   <MdPerson size={30} />
                   <p className="text-lg font-semibold">
-                    Hello, {user.userName}
+                    {user.type === "admin"
+                      ? "Hello, Admin"
+                      : "Hello, " + user.userName}
                   </p>
                 </div>
                 <button
