@@ -22,7 +22,7 @@ export default function Header() {
   };
 
   return (
-    <header className="flex justify-between items-center px-10 sticky top-0 z-10 dark:bg-darkTheme dark:border-gray-500 dark:border-b-2 bg-white shadow-md">
+    <header className="flex justify-between items-center px-10 sticky top-0 z-10 dark:bg-darkTheme dark:border-gray-500 dark:border-b-[1px] bg-white shadow-md">
       <div className="flex gap-10 font-semibold items-center">
         <div className="w-12 h-20 max-md:hidden">
           <img src={Icons.logo2} alt="logo" className="w-full h-full" />

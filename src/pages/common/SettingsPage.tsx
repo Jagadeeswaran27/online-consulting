@@ -27,8 +27,8 @@ export default function SettingsPage() {
     <div
       className="flex "
       style={{
-        minHeight: "calc(100vh - 80px)",
-        maxHeight: "calc(100vh - 80px)",
+        minHeight: "calc(100vh - 81px)",
+        maxHeight: "calc(100vh - 81px)",
       }}
     >
       <div className=" border-gray-500 border-r-2 pt-4 w-[20%]">
