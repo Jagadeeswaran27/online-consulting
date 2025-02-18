@@ -78,7 +78,7 @@ export default function Header() {
             </Link>
             <Link
               to={Routes.signup}
-              className="text-primaryRed border-primaryRed border-2 py-[6px] px-3 font-semibold hover:bg-secondaryRed hover:border-black hover:text-white transition-all duration-300"
+              className="text-primaryRed border-primaryRed border-2 py-[6px] px-3 font-semibold hover:bg-secondaryRed hover:border-primaryRed hover:text-white transition-all duration-300"
             >
               Sign Up
             </Link>

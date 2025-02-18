@@ -19,7 +19,7 @@ export default function Footer() {
             placeholder="Enter your email"
             className="w-full px-5 py-3 border border-gray-600 dark:bg-darkThemeSecondary focus:outline-none flex-grow"
           />
-          <button className="text-primaryRed border-primaryRed border-2 py-[6px] px-3 font-semibold hover:bg-black hover:border-black hover:text-white transition-all duration-300">
+          <button className="text-primaryRed border-primaryRed border-2 py-[6px] px-3 font-semibold hover:bg-secondaryRed hover:border-primaryRed hover:text-white transition-all duration-300">
             Subscribe
           </button>
         </div>

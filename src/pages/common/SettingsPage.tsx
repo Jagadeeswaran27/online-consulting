@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FcNext } from "react-icons/fc";
 import { AuthContext } from "../../store/context/auth";
 import { logout } from "../../core/services/AuthService";
@@ -10,6 +10,7 @@ import General from "../../components/settings/General";
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<SettingsTabs>("Profile");
+  const [profilePic, setProfilePic] = useState<string>();
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const handleLogout = () => {
@@ -21,7 +22,9 @@ export default function SettingsPage() {
     setActiveTab(tab);
   };
 
-  console.log(user);
+  useEffect(() => {
+    setProfilePic(user?.photoURL);
+  }, [user]);
 
   return (
     <div
@@ -43,7 +46,7 @@ export default function SettingsPage() {
             <div className="flex gap-3 items-center">
               <img
                 className="rounded-full h-16 w-16"
-                src={user!.photoURL}
+                src={profilePic}
                 alt="User Profile"
               />
               <div>
