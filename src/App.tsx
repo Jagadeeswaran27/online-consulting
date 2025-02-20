@@ -17,12 +17,14 @@ import AdminProtection from "./store/protection/AdminProtection";
 import RedirectAuthenticated from "./store/protection/RedirectAuthenticated";
 import Error404 from "./pages/auth/Error404";
 import SettingsPage from "./pages/common/SettingsPage";
+import Permissions from "./components/permissions/Permissions";
 
 export default function App() {
   return (
     <AuthContextProvider>
       <BrowserRouter>
         <ScrollToTop />
+        <Permissions />
         <Routes>
           <Route path={AppRoutes.home} element={<RootPage />}>
             <Route index element={<HomePage />} />

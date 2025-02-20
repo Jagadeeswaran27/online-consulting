@@ -7,10 +7,11 @@ import { Routes } from "../../utils/Routes";
 import { SettingsTabs } from "../../types/Settings";
 import Profile from "../../components/settings/Profile";
 import General from "../../components/settings/General";
+import { Images } from "../../resources/Images";
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<SettingsTabs>("Profile");
-  const [profilePic, setProfilePic] = useState<string>();
+  const [profilePic, setProfilePic] = useState<string>("/default-avatar.png"); // Add a default image
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const handleLogout = () => {
@@ -23,8 +24,18 @@ export default function SettingsPage() {
   };
 
   useEffect(() => {
-    setProfilePic(user?.photoURL);
+    if (user?.photoURL) {
+      try {
+        const url = new URL(user.photoURL);
+        setProfilePic(url.toString());
+      } catch (e) {
+        console.error("Invalid profile URL:", e);
+        setProfilePic(Images.defaultAvatar);
+      }
+    }
   }, [user]);
+
+  console.log(profilePic);
 
   return (
     <div
@@ -48,6 +59,9 @@ export default function SettingsPage() {
                 className="rounded-full h-16 w-16"
                 src={profilePic}
                 alt="User Profile"
+                onError={(e) => {
+                  e.currentTarget.src = "/default-avatar.png";
+                }}
               />
               <div>
                 <p

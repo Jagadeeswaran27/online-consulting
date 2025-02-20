@@ -12,7 +12,7 @@ export default function AboutPage() {
           <img
             src={Images.ourMission}
             alt="Our Mission"
-            className="w-full md:w-[25%] h-auto dark:mix-blend-lighten"
+            className="w-full md:w-[25%] h-auto"
           />
           <p className="text-lg text-left mb-10">
             Our mission is to provide expert consultation services online,
