@@ -9,6 +9,7 @@ import {
   uploadProfileImage,
 } from "../../core/services/SettingsServices";
 import { AuthContext } from "../../store/context/auth";
+import { Images } from "../../resources/Images";
 
 interface ProfileProps {
   user: User;
@@ -16,7 +17,7 @@ interface ProfileProps {
 
 export default function Profile({ user }: ProfileProps) {
   const [editableUserName, setEditableUserName] = useState(user.userName);
-  const [editablePhotoURL, setEditablePhotoURL] = useState(user.photoURL || "");
+  const [editablePhotoURL, setEditablePhotoURL] = useState(user.photoURL);
   const [isNameEditing, setIsNameEditing] = useState(false);
   const imageRef = useRef<HTMLInputElement>(null);
   const [isImageSelected, setIsImageSelected] = useState(false);
@@ -86,6 +87,9 @@ export default function Profile({ user }: ProfileProps) {
             src={editablePhotoURL}
             alt="User Profile"
             className="rounded-full h-32 w-32 object-cover border-4 border-gray-300"
+            onError={(e) => {
+              e.currentTarget.src = Images.defaultAvatar;
+            }}
           />
           {isImageSelected ? (
             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full">

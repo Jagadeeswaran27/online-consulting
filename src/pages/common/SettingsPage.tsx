@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { FcNext } from "react-icons/fc";
 import { AuthContext } from "../../store/context/auth";
 import { logout } from "../../core/services/AuthService";
@@ -11,7 +11,6 @@ import { Images } from "../../resources/Images";
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<SettingsTabs>("Profile");
-  const [profilePic, setProfilePic] = useState<string>("/default-avatar.png"); // Add a default image
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const handleLogout = () => {
@@ -22,20 +21,6 @@ export default function SettingsPage() {
   const handleSelectTab = (tab: SettingsTabs) => {
     setActiveTab(tab);
   };
-
-  useEffect(() => {
-    if (user?.photoURL) {
-      try {
-        const url = new URL(user.photoURL);
-        setProfilePic(url.toString());
-      } catch (e) {
-        console.error("Invalid profile URL:", e);
-        setProfilePic(Images.defaultAvatar);
-      }
-    }
-  }, [user]);
-
-  console.log(profilePic);
 
   return (
     <div
@@ -57,10 +42,10 @@ export default function SettingsPage() {
             <div className="flex gap-3 items-center">
               <img
                 className="rounded-full h-16 w-16"
-                src={profilePic}
+                src={user?.photoURL || Images.defaultAvatar}
                 alt="User Profile"
                 onError={(e) => {
-                  e.currentTarget.src = "/default-avatar.png";
+                  e.currentTarget.src = Images.defaultAvatar;
                 }}
               />
               <div>
