@@ -73,10 +73,12 @@ export const googleLogin = async (): Promise<User | null> => {
 
     let userType = "user";
     let userName;
+    let photoURL;
     if (userDoc.exists()) {
       user = userDoc.data() as User;
       userType = user.type;
       userName = user.userName;
+      photoURL = user.photoURL;
     }
 
     await setDoc(
@@ -86,7 +88,7 @@ export const googleLogin = async (): Promise<User | null> => {
         email: userCredential.user.email,
         uid: userCredential.user.uid,
         type: userType,
-        photoURL: userCredential.user.photoURL,
+        photoURL: photoURL || userCredential.user.photoURL,
       } as User,
       { merge: true }
     );

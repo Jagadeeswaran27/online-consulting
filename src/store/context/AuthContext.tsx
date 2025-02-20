@@ -43,8 +43,29 @@ export default function AuthContextProvider({
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
+
+  const changeUserName = (newName: string) => {
+    if (user) {
+      setUser({ ...user, userName: newName });
+    }
+  };
+  const changePhotoUrl = (newPhotoUrl: string) => {
+    if (user) {
+      setUser({ ...user, photoURL: newPhotoUrl });
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, toggleTheme, theme }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        toggleTheme,
+        theme,
+        changePhotoUrl,
+        changeUserName,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

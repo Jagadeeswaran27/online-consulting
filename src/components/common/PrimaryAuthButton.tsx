@@ -13,7 +13,7 @@ export default function PrimaryAuthButton({
   return (
     <button
       type="button"
-      className="w-full bg-primaryRed rounded-lg text-center text-white py-3 font-semibold hover:bg-secondaryRed transition duration-300 flex items-center justify-center"
+      className="w-full bg-primaryRed rounded-lg text-center min-h-[48px] text-white py-3 font-semibold hover:bg-secondaryRed transition duration-300 flex items-center justify-center"
       onClick={onClick}
       disabled={isLoading}
     >

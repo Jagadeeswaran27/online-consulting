@@ -1,9 +1,16 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/auth";
 import { Navigate } from "react-router-dom";
 import { Routes } from "../../utils/Routes";
-import Lottie from "lottie-react";
-import { Animations } from "../../resources/Animations";
+import NProgress from "nprogress";
+
+// Configure NProgress
+NProgress.configure({
+  minimum: 0.3,
+  trickleSpeed: 200,
+  showSpinner: false,
+});
+
 interface ProtectedRouteProps {
   element: React.ReactElement;
 }
@@ -11,22 +18,19 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ element }: ProtectedRouteProps) {
   const { user, loading } = useContext(AuthContext);
 
+  useEffect(() => {
+    if (loading) {
+      NProgress.start();
+    } else {
+      NProgress.set(0.9);
+      setTimeout(() => {
+        NProgress.done();
+      }, 200);
+    }
+  }, [loading]);
+
   if (loading) {
-    return (
-      <div
-        className="flex items-center justify-center h-screen"
-        style={{
-          minHeight: "calc(100vh - 80px)",
-          maxHeight: "calc(100vh - 80px)",
-        }}
-      >
-        <Lottie
-          animationData={Animations.loadingAnimation}
-          loop={true}
-          className="w-48 h-48 md:w-72 md:h-72"
-        />
-      </div>
-    );
+    return null;
   }
 
   if (!user) {
