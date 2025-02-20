@@ -25,13 +25,16 @@ export default function General() {
   const [selectedCountryCode, setSelectedCountryCode] = useState<string | null>(
     generalSettings?.country || null
   );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchGeneralSettings = async () => {
+      setIsLoading(true);
       const settings = await fetchUserGeneralSettings();
       setGeneralSettings(settings);
       setContactMode(settings?.contactPreference || "online");
       setSelectedCountryCode(settings?.country || null);
+      setIsLoading(false);
     };
     fetchGeneralSettings();
   }, []);
@@ -165,7 +168,7 @@ export default function General() {
       </div>
 
       {/* Country Selection */}
-      {generalSettings ? (
+      {!isLoading ? (
         <div className="space-y-4">
           <h2 className="text-xl font-semibold dark:text-gray-100">
             Location Settings
@@ -186,7 +189,7 @@ export default function General() {
       )}
 
       {/* Contact Mode Preference */}
-      {generalSettings && (
+      {!isLoading && (
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Contact Preference</h2>
           <div className="bg-white dark:bg-darkThemeCard rounded-lg p-4 border border-gray-200 dark:border-darkThemeSecondary max-w-[400px]">
