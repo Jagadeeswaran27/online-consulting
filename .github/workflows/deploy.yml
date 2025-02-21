@@ -1,9 +1,9 @@
 name: Deploy to Firebase Hosting
 
 on:
-  pull_request:
+  push:
     branches:
-      - development
+      - development # Change this to the branch you want to deploy from
 
 jobs:
   build_and_deploy:
