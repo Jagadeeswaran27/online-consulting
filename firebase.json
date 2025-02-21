@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "target": "online-consulting-beta",
     "public": "dist",
     "ignore": [
       "firebase.json",
