@@ -5,9 +5,8 @@ import { Routes } from "../../utils/Routes";
 import { Icons } from "../../resources/Icons";
 import PrimaryAuthButton from "../../components/common/PrimaryAuthButton";
 import { googleLogin, login } from "../../core/services/AuthService";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { User } from "../../types/Auth";
+import { showToast } from "../../utils/Toast";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -31,19 +30,13 @@ export default function LoginPage() {
 
   const handleRedirect = (user: User) => {
     if (user.type === "admin") {
-      toast.success("Login successful", {
-        position: "bottom-right",
-      });
+      showToast({ message: "Login successful", type: "success" });
       navigate(Routes.adminDashboard);
     } else if (user.type === "consultant") {
-      toast.success("Login successful", {
-        position: "bottom-right",
-      });
+      showToast({ message: "Login successful", type: "success" });
       navigate(Routes.consultantDashboard);
     } else {
-      toast.success("Login successful", {
-        position: "bottom-right",
-      });
+      showToast({ message: "Login successful", type: "success" });
       navigate(Routes.home);
     }
   };
@@ -54,9 +47,7 @@ export default function LoginPage() {
     if (user) {
       handleRedirect(user);
     } else {
-      toast.error("Invalid Credentials", {
-        position: "bottom-right",
-      });
+      showToast({ message: "Invalid Credentials", type: "error" });
       setIsLoading(false);
     }
   };
@@ -75,13 +66,9 @@ export default function LoginPage() {
     if (success && success.user.emailVerified && user) {
       handleRedirect(user);
     } else if (success && !success.user.emailVerified) {
-      toast.error("Please verify your email", {
-        position: "bottom-right",
-      });
+      showToast({ message: "Please verify your email", type: "error" });
     } else {
-      toast.error("Invalid Credentials", {
-        position: "bottom-right",
-      });
+      showToast({ message: "Invalid Credentials", type: "error" });
     }
     setIsLoading(false);
   };
