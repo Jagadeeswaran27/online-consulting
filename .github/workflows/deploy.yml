@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - development # Change this to the branch you want to deploy from
+  pull_request:
+    branches:
+      - development
 
 jobs:
   build_and_deploy:
@@ -46,6 +49,7 @@ jobs:
           echo "NPM version: $(npm -v)"
 
       - name: Deploy to Firebase Hosting
+        id: deploy
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
@@ -53,3 +57,16 @@ jobs:
           channelId: live
           projectId: consulting-services-d0037
           target: online-consulting-beta
+
+      - name: ✅ Deployment Success
+        if: success()
+        run: |
+          echo "🚀 Deployment successful! Live at: https://online-consulting-beta.web.app"
+
+      - name: 💬 Comment on PR with Deployment URL
+        if: success() && github.event_name == 'pull_request'
+        run: |
+          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.number }}/comments \
+          -d '{"body": "🚀 Deployment successful! View it here: [LIVE SITE](https://online-consulting-beta.web.app)"}'
