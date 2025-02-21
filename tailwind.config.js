@@ -15,6 +15,7 @@ export default {
         darkTheme: "#171717",
         darkThemeSecondary: "#262626",
         darkThemeCard: "#1F1F1F",
+        toastDark: "#262626",
       },
     },
   },

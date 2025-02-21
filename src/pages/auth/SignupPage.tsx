@@ -5,11 +5,10 @@ import { Routes } from "../../utils/Routes";
 import PrimaryAuthButton from "../../components/common/PrimaryAuthButton";
 import { Icons } from "../../resources/Icons";
 import { googleLogin, signup } from "../../core/services/AuthService";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { User } from "../../types/Auth";
 import { auth } from "../../core/config/Firebase";
 import { signOut } from "firebase/auth";
+import { showToast } from "../../utils/Toast";
 
 export default function SignupPage() {
   const [username, setUsername] = useState("");
@@ -45,19 +44,13 @@ export default function SignupPage() {
 
   const handleRedirect = (user: User) => {
     if (user.type === "admin") {
-      toast.success("Login successful", {
-        position: "bottom-right",
-      });
+      showToast({ message: "Login successful", type: "success" });
       navigate(Routes.adminDashboard);
     } else if (user.type === "consultant") {
-      toast.success("Login successful", {
-        position: "bottom-right",
-      });
+      showToast({ message: "Login successful", type: "success" });
       navigate(Routes.consultantDashboard);
     } else {
-      toast.success("Login successful", {
-        position: "bottom-right",
-      });
+      showToast({ message: "Login successful", type: "success" });
       navigate(Routes.home);
     }
   };
@@ -68,9 +61,7 @@ export default function SignupPage() {
     if (user) {
       handleRedirect(user);
     } else {
-      toast.error("Invalid Credentials", {
-        position: "bottom-right",
-      });
+      showToast({ message: "Invalid Credentials", type: "error" });
       setIsLoading(false);
     }
   };
@@ -85,14 +76,13 @@ export default function SignupPage() {
     setIsLoading(true);
     const isSuccess = await signup(email, password, username);
     if (isSuccess) {
-      toast.success("Check Your Email for Verification", {
-        position: "bottom-right",
+      showToast({
+        message: "Check Your Email for Verification",
+        type: "success",
       });
       navigate(Routes.login);
     } else {
-      toast.error("Signup failed", {
-        position: "bottom-right",
-      });
+      showToast({ message: "Error signing up", type: "error" });
     }
     await signOut(auth);
     setIsLoading(false);

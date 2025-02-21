@@ -9,8 +9,8 @@ import {
   changeCountry,
   fetchUserGeneralSettings,
 } from "../../core/services/SettingsServices";
-import { toast } from "react-toastify";
 import { FaSpinner } from "react-icons/fa";
+import { showToast } from "../../utils/Toast";
 
 export default function General() {
   const [notificationStatus, setNotificationStatus] = useState(
@@ -84,13 +84,9 @@ export default function General() {
   const handleChangeCountry = async () => {
     const success = await changeCountry(selectedCountryCode!);
     if (success) {
-      toast.success("Country changed successfully", {
-        position: "bottom-right",
-      });
+      showToast({ message: "Country changed successfully", type: "success" });
     } else {
-      toast.error("Error changing country", {
-        position: "bottom-right",
-      });
+      showToast({ message: "Failed to change country", type: "error" });
     }
   };
 
@@ -99,13 +95,12 @@ export default function General() {
     const success = await changeContactPreference(contactMode);
     if (success) {
       setContactMode(contactMode);
-      toast.success("Contact mode updated successfully", {
-        position: "bottom-right",
+      showToast({
+        message: "Contact mode updated successfully",
+        type: "success",
       });
     } else {
-      toast.error("Failed to update contact mode", {
-        position: "bottom-right",
-      });
+      showToast({ message: "Failed to update contact mode", type: "error" });
       setContactMode((prev) => prev);
     }
   };
@@ -213,7 +208,7 @@ export default function General() {
               <div className="flex items-center gap-2">
                 <div
                   className={`w-2 h-2 rounded-full ${
-                    contactMode === "online" ? "bg-primaryRed" : "bg-gray-400"
+                    contactMode === "online" ? "bg-green-500" : "bg-primaryRed"
                   }`}
                 />
                 <span className="text-sm font-medium dark:text-gray-300">

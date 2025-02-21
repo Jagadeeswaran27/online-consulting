@@ -2,7 +2,6 @@ import { useContext, useRef, useState } from "react";
 import { User } from "../../types/Auth";
 import { BiCheck, BiCheckCircle } from "react-icons/bi";
 import { MdEdit } from "react-icons/md";
-import { toast } from "react-toastify";
 import { FaSpinner } from "react-icons/fa";
 import {
   updateUserName,
@@ -10,6 +9,7 @@ import {
 } from "../../core/services/SettingsServices";
 import { AuthContext } from "../../store/context/auth";
 import { Images } from "../../resources/Images";
+import { showToast } from "../../utils/Toast";
 
 interface ProfileProps {
   user: User;
@@ -35,9 +35,7 @@ export default function Profile({ user }: ProfileProps) {
     const file = e.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
-        toast.error("Please select an image file", {
-          position: "bottom-right",
-        });
+        showToast({ message: "Please select an image file", type: "error" });
         return;
       }
       setEditablePhotoURL(URL.createObjectURL(file));
@@ -54,13 +52,12 @@ export default function Profile({ user }: ProfileProps) {
       setEditablePhotoURL(newPhotoURL);
       setIsImageSelected(false);
       changePhotoUrl(newPhotoURL);
-      toast.success("Profile picture updated successfully", {
-        position: "bottom-right",
+      showToast({
+        message: "Profile picture updated successfully",
+        type: "success",
       });
     } else {
-      toast.error("Failed to update profile picture", {
-        position: "bottom-right",
-      });
+      showToast({ message: "Failed to update profile picture", type: "error" });
     }
   };
 
@@ -69,13 +66,10 @@ export default function Profile({ user }: ProfileProps) {
     const result = await updateUserName(editableUserName);
     if (result) {
       changeUserName(editableUserName);
-      toast.success("Name updated successfully", {
-        position: "bottom-right",
-      });
+      showToast({ message: "Name updated successfully", type: "success" });
     } else {
-      toast.error("Failed to update name", {
-        position: "bottom-right",
-      });
+      showToast({ message: "Failed to update name", type: "error" });
+      setEditableUserName(user.userName);
     }
   };
 
