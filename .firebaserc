@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "consulting-services-d0037"
-  }
+  },
+  "targets": {
+    "consulting-services-d0037": {
+      "hosting": {
+        "online-consulting-beta": [
+          "online-consulting-beta"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
