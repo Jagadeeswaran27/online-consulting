@@ -24,7 +24,9 @@ export default function Services() {
             >
               <div
                 className={`absolute left-0 top-0 h-full w-[3px] transition-all duration-300 ${
-                  selectedService === index ? "bg-black" : "bg-transparent"
+                  selectedService === index
+                    ? "bg-black dark:invert"
+                    : "bg-transparent"
                 }`}
               ></div>
 

@@ -8,4 +8,5 @@ export const Routes = {
   adminDashboard: "/admin-dashboard",
   consultantDashboard: "/consultant-dashboard",
   userDashboard: "/user-dashboard",
+  settings: "/settings",
 };

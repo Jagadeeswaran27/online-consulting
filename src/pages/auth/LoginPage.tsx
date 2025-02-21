@@ -100,7 +100,7 @@ export default function LoginPage() {
         maxHeight: "calc(100vh - 80px)",
       }}
     >
-      <div className="w-full max-w-md p-8 rounded-xl bg-white shadow-[0px_4px_20px_rgba(0,0,0,0.2)]">
+      <div className="w-full max-w-md p-8 rounded-xl dark:bg-darkThemeCard shadow-[0px_4px_20px_rgba(0,0,0,0.2)]">
         <h2 className=" text-3xl font-semibold text-center mb-6">
           Welcome Back
         </h2>
@@ -111,12 +111,12 @@ export default function LoginPage() {
             <input
               type="email"
               placeholder="Email"
-              className="w-full px-10 py-3 border border-gray-600 rounded-lg focus:outline-none "
+              className="w-full px-10 py-3 border border-gray-600 dark:bg-darkThemeSecondary rounded-lg focus:outline-none "
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+              <p className="text-primaryRed text-sm mt-1">{errors.email}</p>
             )}
           </div>
 
@@ -125,7 +125,7 @@ export default function LoginPage() {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
-              className="w-full px-10 py-3 border border-gray-600 rounded-lg focus:outline-none "
+              className="w-full px-10 py-3 border border-gray-600 dark:bg-darkThemeSecondary rounded-lg focus:outline-none "
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />

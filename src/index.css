@@ -12,3 +12,20 @@
 .text-shadow-lg-dark {
   text-shadow: 2px 2px 6px rgba(0, 0, 0, 1);
 }
+
+#nprogress .bar {
+  background: #ed2a4f !important; /* Change bar color */
+  height: 4px; /* Change height */
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #ed2a4f, 0 0 5px #ed2a4f; /* Glow effect */
+}
+
+html.dark #nprogress .bar {
+  background: #ed2a4f !important; /* Your desired color */
+}
+
+html.dark body {
+  background: #171717 !important; /* Ensure background stays dark */
+}
