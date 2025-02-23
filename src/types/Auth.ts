@@ -7,3 +7,11 @@ export type User = {
 };
 
 export type UserType = "admin" | "user" | "consultant";
+
+export type Consultant = {
+  cid: string;
+  bio: string;
+  experience: string;
+};
+
+export type ConsultantUser = User & Consultant;

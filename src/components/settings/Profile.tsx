@@ -80,7 +80,7 @@ export default function Profile({ user }: ProfileProps) {
           <img
             src={editablePhotoURL}
             alt="User Profile"
-            className="rounded-full h-32 w-32 object-cover border-4 border-gray-300"
+            className="rounded-full h-32 w-32 object-cover object-top border-4 border-gray-300"
             onError={(e) => {
               e.currentTarget.src = Images.defaultAvatar;
             }}

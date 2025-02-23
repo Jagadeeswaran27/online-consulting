@@ -3,6 +3,7 @@ import { AuthContext } from "../context/auth";
 import { Navigate } from "react-router-dom";
 import { Routes } from "../../utils/Routes";
 import NProgress from "nprogress";
+
 interface AdminProtectionProps {
   element: React.ReactElement;
 }
@@ -20,6 +21,10 @@ export default function AdminProtection({ element }: AdminProtectionProps) {
       }, 200);
     }
   }, [loading]);
+
+  if (loading) {
+    return null;
+  }
 
   if (!user || user.type !== "admin") {
     return <Navigate to={Routes.login} />;

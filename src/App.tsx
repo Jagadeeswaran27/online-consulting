@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import RootPage from "./pages/RootPage";
 import AboutPage from "./pages/common/AboutPage";
 import HomePage from "./pages/common/HomePage";
@@ -18,6 +18,10 @@ import RedirectAuthenticated from "./store/protection/RedirectAuthenticated";
 import Error404 from "./pages/auth/Error404";
 import SettingsPage from "./pages/common/SettingsPage";
 import Permissions from "./components/permissions/Permissions";
+import ManageServices from "./pages/admin/ManageServices";
+import ManageConsultants from "./pages/admin/ManageConsultants";
+import PendingApplications from "./pages/admin/PendingApplications";
+import ManageConsultant from "./pages/admin/ManageConsultant";
 
 export default function App() {
   return (
@@ -48,7 +52,13 @@ export default function App() {
             <Route
               path={AppRoutes.adminDashboard}
               element={<AdminProtection element={<AdminDashboard />} />}
-            />
+            >
+              <Route index element={<Navigate to="services" replace />} />
+              <Route path="services" element={<ManageServices />} />
+              <Route path="consultants" element={<ManageConsultants />} />
+              <Route path="applications" element={<PendingApplications />} />
+              <Route path="consultant/:id" element={<ManageConsultant />} />
+            </Route>
             <Route
               path={AppRoutes.settings}
               element={<ProtectedRoute element={<SettingsPage />} />}

@@ -10,4 +10,5 @@ export const Images = {
   ourVision,
   ourTeam,
   defaultAvatar,
+  placeholderImage: "https://placehold.co/600x400",
 };
