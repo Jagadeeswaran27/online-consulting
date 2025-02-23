@@ -7,7 +7,7 @@ import { logout } from "../../core/services/AuthService";
 import { AuthContext } from "../../store/context/auth";
 
 export default function Header() {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
@@ -47,44 +47,46 @@ export default function Header() {
           </p>
         </nav>
       </div>
-      <div className="hidden md:flex gap-10 items-center">
-        {user ? (
-          <>
-            <div className="flex items-center">
-              <MdPerson size={30} />
-              <p className="text-lg ml-2 font-semibold">
-                {user.type === "admin"
-                  ? "Hello, Admin"
-                  : "Hello, " + user.userName}
-              </p>
-            </div>
-            {location.pathname !== Routes.settings && (
-              <Link to={Routes.settings}>
-                <img
-                  src={Icons.settings}
-                  alt="settings"
-                  className="w-7 h-7 dark:invert"
-                />
+      {!loading && (
+        <div className="hidden md:flex gap-10 items-center">
+          {user ? (
+            <>
+              <div className="flex items-center">
+                <MdPerson size={30} />
+                <p className="text-lg ml-2 font-semibold">
+                  {user.type === "admin"
+                    ? "Hello, Admin"
+                    : "Hello, " + user.userName}
+                </p>
+              </div>
+              {location.pathname !== Routes.settings && (
+                <Link to={Routes.settings}>
+                  <img
+                    src={Icons.settings}
+                    alt="settings"
+                    className="w-7 h-7 dark:invert"
+                  />
+                </Link>
+              )}
+            </>
+          ) : (
+            <>
+              <Link
+                to={Routes.login}
+                className="bg-primaryRed text-white py-2 px-5 font-semibold hover:bg-secondaryRed hover:text-white transition-all duration-300"
+              >
+                Login
               </Link>
-            )}
-          </>
-        ) : (
-          <>
-            <Link
-              to={Routes.login}
-              className="bg-primaryRed text-white py-2 px-5 font-semibold hover:bg-secondaryRed hover:text-white transition-all duration-300"
-            >
-              Login
-            </Link>
-            <Link
-              to={Routes.signup}
-              className="text-primaryRed border-primaryRed border-2 py-[6px] px-3 font-semibold hover:bg-secondaryRed hover:border-primaryRed hover:text-white transition-all duration-300"
-            >
-              Sign Up
-            </Link>
-          </>
-        )}
-      </div>
+              <Link
+                to={Routes.signup}
+                className="text-primaryRed border-primaryRed border-2 py-[6px] px-3 font-semibold hover:bg-secondaryRed hover:border-primaryRed hover:text-white transition-all duration-300"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
+        </div>
+      )}
 
       {isMenuOpen && (
         <div className="fixed top-0 left-0 w-full h-full bg-white shadow-lg z-20 px-5">

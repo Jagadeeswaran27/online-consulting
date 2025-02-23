@@ -41,7 +41,7 @@ export default function SettingsPage() {
           >
             <div className="flex gap-3 items-center">
               <img
-                className="rounded-full h-16 w-16"
+                className="rounded-full object-cover object-top min-h-16 min-w-16 max-h-16 max-w-16"
                 src={user?.photoURL || Images.defaultAvatar}
                 alt="User Profile"
                 onError={(e) => {
@@ -54,9 +54,9 @@ export default function SettingsPage() {
                 >
                   {user?.userName}
                 </p>
-                <p className="text-xs">View Profile</p>
+                <p className="text-xs my-1">View Profile</p>
               </div>
-              <FcNext className="text-primaryRed" />
+              <FcNext className="mr-4" />
             </div>
           </div>
           <div

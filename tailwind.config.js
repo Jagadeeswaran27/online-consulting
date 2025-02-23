@@ -7,6 +7,9 @@ export default {
       fontFamily: {
         sans: ["DM Sans", "sans-serif"],
       },
+      boxShadow: {
+        customLight: "0px 2px 10px rgba(0,0,0,0.2)",
+      },
       colors: {
         primaryRed: "#ed2a4f",
         secondaryRed: "#c32140",
