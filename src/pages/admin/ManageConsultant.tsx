@@ -57,67 +57,65 @@ export default function ManageConsultant() {
   }
 
   return (
-    <div className="container mx-auto px-4 pb-8">
+    <div className="container mx-auto px-2 md:px-4 pb-4 md:pb-8">
       <button
         onClick={() => navigate(-1)}
-        className="mb-6 flex items-center gap-2 text-primaryRed hover:text-secondaryRed transition-colors"
+        className="mb-4 md:mb-6 flex items-center gap-2 text-primaryRed hover:text-secondaryRed transition-colors"
       >
         <FaArrowLeft size={16} />
         <span>Back</span>
       </button>
 
-      <div className="bg-white shadow-customLight flex flex-col items-start gap-5 dark:bg-darkThemeCard rounded-lg p-6">
-        <div className="flex flex-col md:flex-row gap-8">
+      <div className="bg-white shadow-customLight flex flex-col items-start gap-3 md:gap-5 dark:bg-darkThemeCard rounded-lg p-3 md:p-6">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-8 w-full">
           <div className="flex flex-col items-center md:w-1/3">
             <img
               src={consultant.photoURL || Images.placeholderImage}
               alt={consultant.userName}
-              className="w-64 h-64 object-cover rounded-full"
+              className="w-32 h-32 md:w-64 md:h-64 object-cover rounded-full"
               onError={(e) => {
                 (e.target as HTMLImageElement).src = Images.placeholderImage;
               }}
             />
             <div className="mt-4 text-center">
-              <h2 className="text-2xl font-bold dark:text-white">
+              <h2 className="text-xl md:text-2xl font-bold dark:text-white">
                 {consultant.userName}
               </h2>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">
                 {consultant.email}
               </p>
             </div>
           </div>
 
-          <div className="w-full md:w-2/3 space-y-6">
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold dark:text-white">
+          <div className="w-full md:w-2/3 space-y-4 md:space-y-6">
+            <div className="space-y-2 md:space-y-4">
+              <h3 className="text-lg md:text-xl font-semibold dark:text-white">
                 Professional Details
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 bg-gray-50 dark:bg-darkThemeSecondary rounded-lg">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+              <div className="grid grid-cols-1 gap-4">
+                <div className="p-3 md:p-4 bg-gray-50 dark:bg-darkThemeSecondary rounded-lg">
+                  <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
                     Experience
                   </p>
-                  <p className="text-lg font-medium dark:text-white">
+                  <p className="text-base md:text-lg font-medium dark:text-white">
                     {consultant.experience} years
                   </p>
                 </div>
               </div>
             </div>
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold dark:text-white">
+            <div className="space-y-2 md:space-y-4">
+              <h3 className="text-lg md:text-xl font-semibold dark:text-white">
                 Biography
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">
                 {consultant.bio}
               </p>
             </div>
-
-            {/* Remove the previous button since we moved it to the services section */}
           </div>
         </div>
-        <div className="my-5 w-full">
+        <div className="my-2 md:my-5 w-full">
           {!services && (
-            <div className="flex justify-end items-center mt-4 mb-6 mr-4">
+            <div className="flex justify-end items-center mt-2 md:mt-4 mb-3 md:mb-6 mr-2 md:mr-4">
               <div className="w-[150px]">
                 <PrimaryAuthButton
                   onClick={handleFetchServices}
@@ -128,36 +126,37 @@ export default function ManageConsultant() {
           )}
 
           {loadingServices && (
-            <div className="flex justify-center py-8">
+            <div className="flex justify-center py-4 md:py-8">
               <FaSpinner size={24} className="animate-spin text-primaryRed" />
             </div>
           )}
           {services && services.length > 0 && (
-            <h3 className="text-xl font-semibold dark:text-white">Services</h3>
+            <h3 className="text-lg md:text-xl font-semibold dark:text-white">
+              Services
+            </h3>
           )}
 
           {!loadingServices && services && services.length > 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mx-5` mt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mx-0 md:mx-5 mt-3 md:mt-4">
               {services.map((service) => (
                 <div
                   key={service.id}
-                  className=" dark:bg-darkThemeSecondary rounded-lg p-4 transition-all duration-300 shadow-customLight"
+                  className="dark:bg-darkThemeSecondary rounded-lg p-3 md:p-4 transition-all duration-300 shadow-customLight"
                 >
-                  <div className="flex gap-4">
+                  <div className="flex gap-3 md:gap-4">
                     <img
                       src={service.thumbnail || Images.placeholderImage}
                       alt={service.name}
-                      className="w-20 h-20 object-cover rounded-lg"
+                      className="w-16 h-16 md:w-20 md:h-20 object-cover rounded-lg"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src =
-                          Images.placeholderImage;
+                        e.currentTarget.src = Images.placeholderImage;
                       }}
                     />
                     <div>
-                      <h4 className="font-semibold text-lg dark:text-white">
+                      <h4 className="font-semibold text-base md:text-lg dark:text-white">
                         {service.name}
                       </h4>
-                      <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2">
+                      <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
                         {service.description}
                       </p>
                     </div>

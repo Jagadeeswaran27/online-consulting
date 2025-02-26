@@ -41,20 +41,20 @@ const ConsultantsList = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold dark:text-white">
+    <div className="container mx-auto px-2 md:px-4 py-4 md:py-8">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+        <h2 className="text-xl md:text-2xl font-bold dark:text-white">
           Manage Consultants
         </h2>
-        <div className="relative">
+        <div className="w-full sm:w-auto">
           <input
             type="text"
             placeholder="Search consultants"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-64 px-4 py-2 rounded-lg border border-gray-400 
+            className="w-full sm:w-64 px-4 py-2 rounded-lg border border-gray-400 
                        dark:border-gray-700 dark:bg-darkThemeSecondary 
-                       dark:text-white focus:outline-none "
+                       dark:text-white focus:outline-none"
           />
         </div>
       </div>
@@ -64,16 +64,16 @@ const ConsultantsList = () => {
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead className="bg-gray-50 dark:bg-darkThemeSecondary">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-3 md:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Consultant
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Bio
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Experience
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-3 md:px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -81,11 +81,11 @@ const ConsultantsList = () => {
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {filteredConsultants.map((consultant) => (
                 <tr key={consultant.cid}>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-3 md:px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="h-10 w-10 flex-shrink-0">
+                      <div className="h-8 w-8 md:h-10 md:w-10 flex-shrink-0">
                         <img
-                          className="h-10 w-10 rounded-full object-cover"
+                          className="h-8 w-8 md:h-10 md:w-10 rounded-full object-cover"
                           src={consultant.photoURL || Images.placeholderImage}
                           alt=""
                           onError={(e) => {
@@ -94,27 +94,27 @@ const ConsultantsList = () => {
                           }}
                         />
                       </div>
-                      <div className="ml-4">
+                      <div className="ml-2 md:ml-4">
                         <div className="text-sm font-medium text-gray-900 dark:text-white">
                           {consultant.userName}
                         </div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                        <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400 truncate max-w-[120px] md:max-w-none">
                           {consultant.email}
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900 dark:text-white line-clamp-3 max-w-md">
+                  <td className="table-cell px-6 py-4">
+                    <div className="text-sm text-gray-900 dark:text-white line-clamp-2 max-w-[200px] md:max-w-md">
                       {consultant.bio}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="table-cell px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-900 dark:text-white">
                       {consultant.experience} years
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-right text-sm font-medium">
+                  <td className="px-3 md:px-6 py-4 text-right text-sm font-medium">
                     <Link
                       to={`/admin-dashboard/consultant/${consultant.cid}`}
                       className="text-primaryRed hover:text-secondaryRed"

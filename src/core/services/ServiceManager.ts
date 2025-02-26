@@ -5,6 +5,7 @@ import {
   setDoc,
   doc,
   deleteDoc,
+  getDoc,
 } from "firebase/firestore";
 import {
   ref,
@@ -31,6 +32,24 @@ export const fetchServices = async (): Promise<Services[]> => {
   } catch (error) {
     console.error("Error fetching services:", error);
     return [];
+  }
+};
+
+export const fetchService = async (id: string): Promise<Services | null> => {
+  try {
+    const serviceRef = doc(db, "services", id);
+    const docSnap = await getDoc(serviceRef);
+
+    if (docSnap.exists()) {
+      return {
+        id: docSnap.id,
+        ...docSnap.data(),
+      } as Services;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching service:", error);
+    return null;
   }
 };
 
