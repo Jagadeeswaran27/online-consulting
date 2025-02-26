@@ -8,11 +8,9 @@ export default function Hero() {
   const { user } = useContext(AuthContext);
   return (
     <div
-      className="flex flex-col text-white gap-5 sm:gap-10 items-center justify-center py-10 sm:py-20 px-4 sm:px-0"
+      className="flex flex-col text-white gap-5 sm:gap-10 items-center justify-center py-10 sm:py-20 px-4 sm:px-0 max-sm:min-h-[500px] max-sm:max-h-[100vh] min-h-[calc(100vh-80px)] max-h-[calc(100vh-80px)]"
       style={{
         background: `url(${Images.hero}) no-repeat center center/cover`,
-        minHeight: "500px",
-        maxHeight: "100vh",
       }}
     >
       <h1 className="text-3xl sm:text-4xl md:text-[50px] font-semibold text-shadow-lg text-center">
