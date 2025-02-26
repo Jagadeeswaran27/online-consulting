@@ -75,12 +75,12 @@ export default function Profile({ user }: ProfileProps) {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center gap-6">
+      <div className="flex flex-col sm:flex-row items-center gap-6">
         <div className="relative group">
           <img
             src={editablePhotoURL}
             alt="User Profile"
-            className="rounded-full h-32 w-32 object-cover object-top border-4 border-gray-300"
+            className="rounded-full h-24 w-24 sm:h-32 sm:w-32 object-cover object-top border-4 border-gray-300"
             onError={(e) => {
               e.currentTarget.src = Images.defaultAvatar;
             }}
@@ -115,9 +115,9 @@ export default function Profile({ user }: ProfileProps) {
             id="profile-photo-input"
           />
         </div>
-        <div>
+        <div className="text-center sm:text-left mt-4 sm:mt-0">
           <h2 className="text-2xl font-semibold">{user.userName}</h2>
-          <p className="text-gray-500 ">{user.email}</p>
+          <p className="text-gray-500">{user.email}</p>
         </div>
       </div>
 
@@ -127,12 +127,12 @@ export default function Profile({ user }: ProfileProps) {
             User Name
           </label>
           {isNameEditing ? (
-            <div className="w-[300px] mt-2 flex gap-2 items-center">
+            <div className="w-full max-w-[300px] mt-2 flex gap-2 items-center">
               <input
                 type="text"
                 value={editableUserName}
                 onChange={(e) => setEditableUserName(e.target.value)}
-                className="w-full pl-5 py-2 border border-gray-600 dark:bg-darkThemeSecondary rounded-lg focus:outline-none "
+                className="w-full pl-5 py-2 border border-gray-600 dark:bg-darkThemeSecondary rounded-lg focus:outline-none"
               />
               <BiCheckCircle
                 onClick={handleSaveName}
@@ -154,7 +154,7 @@ export default function Profile({ user }: ProfileProps) {
         </div>
         <div>
           <label className="text-sm font-semibold text-gray-500">Email</label>
-          <p className="text-lg font-medium mt-2">{user.email}</p>
+          <p className="text-lg font-medium mt-2 break-all">{user.email}</p>
         </div>
         <div>
           <label className="text-sm font-semibold text-gray-500">

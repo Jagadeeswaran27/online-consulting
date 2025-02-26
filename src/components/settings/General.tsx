@@ -146,7 +146,7 @@ export default function General() {
 
           {notificationStatus !== "granted" &&
             notificationStatus !== "denied" && (
-              <div className="w-[230px]">
+              <div className="w-full max-w-[230px]">
                 <PrimaryAuthButton
                   text="Enable Notifications"
                   onClick={requestNotifications}
@@ -168,7 +168,7 @@ export default function General() {
           <h2 className="text-xl font-semibold dark:text-gray-100">
             Location Settings
           </h2>
-          <div className="max-w-md">
+          <div className="w-full max-w-md">
             <label className="block text-sm font-medium text-gray-500 mb-2">
               Your Country
             </label>
@@ -187,9 +187,9 @@ export default function General() {
       {!isLoading && (
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Contact Preference</h2>
-          <div className="bg-white dark:bg-darkThemeCard rounded-lg p-4 border border-gray-200 dark:border-darkThemeSecondary max-w-[400px]">
+          <div className="bg-white dark:bg-darkThemeCard rounded-lg p-4 border border-gray-200 dark:border-darkThemeSecondary w-full max-w-[400px]">
             <div className="flex flex-col space-y-4">
-              <div className="flex items-center gap-8 ">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
                 <div className="space-y-1">
                   <h3 className="font-medium text-gray-900 dark:text-gray-100">
                     Availability Mode
@@ -223,11 +223,11 @@ export default function General() {
       {/* Download Data */}
       <div className="space-y-4">
         <h2 className="text-xl font-semibold">Your Data</h2>
-        <div className="max-w-md">
+        <div className="w-full max-w-md">
           <p className="text-sm text-gray-500 mb-4">
             Download a copy of your personal data in JSON format.
           </p>
-          <div className="w-[230px]">
+          <div className="w-full max-w-[230px]">
             <PrimaryAuthButton
               text={"Download"}
               isLoading={isDownloading}

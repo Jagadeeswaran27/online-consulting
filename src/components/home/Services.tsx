@@ -19,7 +19,7 @@ export default function Services() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-[493px] max-h-[493px]">
+      <div className="flex justify-center items-center min-h-[300px] sm:min-h-[493px] max-h-[493px]">
         <FaSpinner className="animate-spin" />
       </div>
     );
@@ -30,7 +30,7 @@ export default function Services() {
       <div
         className="flex justify-center items-center"
         style={{
-          minHeight: "calc(100vh - 191px)",
+          minHeight: "300px",
           maxHeight: "calc(100vh - 191px)",
         }}
       >
@@ -40,18 +40,20 @@ export default function Services() {
   }
 
   return (
-    <div>
-      <h1 className="text-center text-4xl mb-20 font-semibold">Our Services</h1>
+    <div className="px-4 sm:px-0">
+      <h1 className="text-center text-3xl sm:text-4xl mb-10 sm:mb-20 font-semibold">
+        Our Services
+      </h1>
       {services && (
-        <div className="flex gap-16 items-center justify-between w-[80%] mx-auto my-10 min-h-[373px] max-h-[373px]">
-          <div className="w-[50%] h-full">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-center justify-between w-full sm:w-[90%] md:w-[80%] mx-auto my-10 min-h-[300px] sm:min-h-[373px] max-h-full sm:max-h-[373px]">
+          <div className="w-full md:w-[50%] h-full">
             <img
               src={services[selectedService].thumbnail}
               alt=""
-              className="w-full h-full"
+              className="w-full h-full object-cover"
             />
           </div>
-          <div className="w-[50%] flex flex-col xl:gap-5 gap-2 justify-between">
+          <div className="w-full md:w-[50%] flex flex-col xl:gap-5 gap-2 justify-between">
             {services.map((service, index) => (
               <div
                 key={service.id}
@@ -66,10 +68,10 @@ export default function Services() {
                   }`}
                 ></div>
 
-                <h1 className="font-semibold xl:text-[40px] lg:text-[30px] text-[20px]">
+                <h1 className="font-semibold text-[20px] sm:text-[25px] lg:text-[30px] xl:text-[40px]">
                   Consult for {service.name}
                 </h1>
-                <p className="xl:text-[18px] lg:text-[14px] text-[12px]">
+                <p className="text-[12px] sm:text-[14px] xl:text-[18px]">
                   {service.description}
                 </p>
               </div>

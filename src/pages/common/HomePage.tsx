@@ -9,13 +9,13 @@ const HomePage: React.FC = () => {
   return (
     <div>
       <Hero />
-      <div className="my-20"></div>
+      <div className="my-10 sm:my-20"></div>
       <Services />
-      <div className="my-32"></div>
+      <div className="my-16 sm:my-24 md:my-32"></div>
       <Banner />
-      <div className="my-20"></div>
+      <div className="my-10 sm:my-20"></div>
       <ContactUs />
-      <div className="my-20"></div>
+      <div className="my-10 sm:my-20"></div>
       <hr className="border-black dark:border-gray-500 border-t-2" />
       <Footer />
     </div>

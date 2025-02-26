@@ -151,20 +151,20 @@ export default function ManageServices() {
   }
 
   return (
-    <div className="container mx-auto px-4">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">Manage Services</h1>
-        <div>
+    <div className="container mx-auto px-2 md:px-4">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 md:gap-0 mb-4 md:mb-6">
+        <h1 className="text-xl md:text-2xl font-semibold">Manage Services</h1>
+        <div className="mt-2 sm:mt-0">
           <PrimaryAuthButton text="Add New Service" onClick={openModal} />
         </div>
       </div>
 
       {services.length === 0 ? (
-        <div className="text-center p-8 bg-white dark:bg-darkThemeCard rounded-lg">
+        <div className="text-center p-4 md:p-8 bg-white dark:bg-darkThemeCard rounded-lg">
           <p className="text-gray-500">No services available</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
           {services.map((service) => (
             <AdminServicesCard
               configureEdit={configureEdit}

@@ -19,6 +19,16 @@ export default {
         darkThemeSecondary: "#262626",
         darkThemeCard: "#1F1F1F",
         toastDark: "#262626",
+        textHeading: "#1f2937",
+        textBody: {
+          DEFAULT: "#4b5563", // gray-600
+          dark: "#d1d5db", // gray-300 for dark mode
+        },
+        textMuted: {
+          DEFAULT: "#6b7280", // gray-500
+          dark: "#9ca3af", // gray-400 for dark mode
+        },
+        textStar: "#eab308", // yellow-500
       },
     },
   },
