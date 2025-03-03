@@ -11,7 +11,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../config/Firebase";
-import { Consultant, ConsultantUser } from "../../types/Auth";
+import { Consultant, ConsultantUser, User } from "../../types/Users";
 import { Services } from "../../types/Services";
 
 const CONSULTANTS_PER_PAGE = 5;
@@ -94,31 +94,62 @@ export const fetchConsultantById = async (
 };
 
 export const fetchConsultantServices = async (
-  cid: string
+  sid: string[]
 ): Promise<Services[]> => {
   try {
+    const services = await Promise.all(
+      sid.map(async (id) => {
+        const serviceRef = doc(db, "services", id);
+        const docSnap = await getDoc(serviceRef);
+        if (docSnap.exists()) {
+          return {
+            id: docSnap.id,
+            ...docSnap.data(),
+          } as Services;
+        }
+        return undefined;
+      })
+    );
+
+    return services.filter(
+      (service): service is Services => service !== undefined
+    );
+  } catch (error) {
+    console.error("Error fetching consultant services:", error);
+    return [];
+  }
+};
+
+export const fetchConsultantsByService = async (
+  serviceId: string
+): Promise<ConsultantUser[]> => {
+  try {
     const q = query(
-      collection(db, "service_consultants"),
-      where("cid", "==", cid)
+      collection(db, "consultants"),
+      where("services", "array-contains", serviceId)
     );
     const snapshot = await getDocs(q);
-
     if (snapshot.empty) {
       return [];
     }
-
-    const servicesPromises = snapshot.docs.map(async (doccument) => {
-      const serviceDocRef = doc(db, "services", doccument.data().sid);
-      const serviceDoc = await getDoc(serviceDocRef);
-      return serviceDoc.exists()
-        ? ({ id: serviceDoc.id, ...serviceDoc.data() } as Services)
-        : null;
-    });
-
-    const services = await Promise.all(servicesPromises);
-    return services.filter((service): service is Services => service !== null);
+    const consultants = await Promise.all(
+      snapshot.docs.map(async (docSnap) => {
+        const consultantData = docSnap.data() as Consultant;
+        const userRef = doc(db, "users", consultantData.cid);
+        const userSnap = await getDoc(userRef);
+        if (!userSnap.exists()) {
+          console.warn(
+            `User data not found for consultant ID: ${consultantData.cid}`
+          );
+          return null;
+        }
+        const userData = userSnap.data() as User;
+        return { ...userData, ...consultantData } as ConsultantUser;
+      })
+    );
+    return consultants.filter((c): c is ConsultantUser => c !== null);
   } catch (error) {
-    console.error("Error fetching consultant services:", error);
+    console.error("Error fetching consultants by service:", error);
     return [];
   }
 };

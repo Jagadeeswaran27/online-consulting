@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { auth } from "../../core/config/Firebase";
 import { AuthContext } from "./auth";
 import { getUser } from "../../core/services/AuthService";
-import { User } from "../../types/Auth";
+import { User } from "../../types/Users";
 import { getInitialTheme } from "../../utils/Helper";
 import { Theme } from "../../types/Settings";
 

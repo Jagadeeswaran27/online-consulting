@@ -9,7 +9,7 @@ import {
   signOut,
   UserCredential,
 } from "firebase/auth";
-import { User } from "../../types/Auth";
+import { User } from "../../types/Users";
 export const signup = async (
   email: string,
   password: string,
@@ -71,27 +71,11 @@ export const googleLogin = async (): Promise<User | null> => {
 
     let user: User | null = null;
 
-    let userType = "user";
-    let userName;
-    let photoURL;
     if (userDoc.exists()) {
       user = userDoc.data() as User;
-      userType = user.type;
-      userName = user.userName;
-      photoURL = user.photoURL;
     }
 
-    await setDoc(
-      userDocRef,
-      {
-        userName: userName || userCredential.user.displayName,
-        email: userCredential.user.email,
-        uid: userCredential.user.uid,
-        type: userType,
-        photoURL: photoURL || userCredential.user.photoURL,
-      } as User,
-      { merge: true }
-    );
+    await setDoc(userDocRef, user as User, { merge: true });
 
     return user;
   }

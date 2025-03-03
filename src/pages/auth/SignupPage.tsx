@@ -5,7 +5,7 @@ import { Routes } from "../../utils/Routes";
 import PrimaryAuthButton from "../../components/common/PrimaryAuthButton";
 import { Icons } from "../../resources/Icons";
 import { googleLogin, signup } from "../../core/services/AuthService";
-import { User } from "../../types/Auth";
+import { User } from "../../types/Users";
 import { auth } from "../../core/config/Firebase";
 import { signOut } from "firebase/auth";
 import { showToast } from "../../utils/Toast";
