@@ -5,7 +5,7 @@ import { Routes } from "../../utils/Routes";
 import { Icons } from "../../resources/Icons";
 import PrimaryAuthButton from "../../components/common/PrimaryAuthButton";
 import { googleLogin, login } from "../../core/services/AuthService";
-import { User } from "../../types/Auth";
+import { User } from "../../types/Users";
 import { showToast } from "../../utils/Toast";
 
 export default function LoginPage() {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ConsultantUser } from "../../types/Auth";
+import { ConsultantUser } from "../../types/Users";
 import {
   fetchConsultantById,
   fetchConsultantServices,
@@ -33,7 +33,7 @@ export default function ManageConsultant() {
   const handleFetchServices = async () => {
     if (!consultant) return;
     setLoadingServices(true);
-    const services = await fetchConsultantServices(consultant.cid);
+    const services = await fetchConsultantServices(consultant.services);
     setServices(services);
     setLoadingServices(false);
   };

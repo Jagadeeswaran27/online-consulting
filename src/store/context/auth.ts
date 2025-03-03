@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { User } from "../../types/Auth";
+import { User } from "../../types/Users";
 interface AuthContextType {
   user: User | null;
   loading: boolean;

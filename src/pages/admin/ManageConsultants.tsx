@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { fetchConsultants } from "../../core/services/ConsultantService";
-import { ConsultantUser } from "../../types/Auth";
+import { ConsultantUser } from "../../types/Users";
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { FaSpinner } from "react-icons/fa";
 import { Images } from "../../resources/Images";

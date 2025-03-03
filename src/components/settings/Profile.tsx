@@ -1,5 +1,5 @@
 import { useContext, useRef, useState } from "react";
-import { User } from "../../types/Auth";
+import { User } from "../../types/Users";
 import { BiCheck, BiCheckCircle } from "react-icons/bi";
 import { MdEdit } from "react-icons/md";
 import { FaSpinner } from "react-icons/fa";
