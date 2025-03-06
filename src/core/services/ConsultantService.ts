@@ -9,12 +9,13 @@ import {
   QueryDocumentSnapshot,
   DocumentData,
   where,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "../config/Firebase";
 import { Consultant, ConsultantUser, User } from "../../types/Users";
 import { Services } from "../../types/Services";
 
-const CONSULTANTS_PER_PAGE = 5;
+const CONSULTANTS_PER_PAGE = 1;
 
 export const fetchConsultants = async (
   lastDoc: QueryDocumentSnapshot<DocumentData> | null = null
@@ -93,6 +94,42 @@ export const fetchConsultantById = async (
   }
 };
 
+export const getTopConsultants = async (
+  serviceId: string
+): Promise<ConsultantUser[]> => {
+  try {
+    const consultantsRef = collection(db, "consultants");
+    const q = query(
+      consultantsRef,
+      where("services", "array-contains", serviceId),
+      orderBy("avgRating", "desc"),
+      orderBy("reviewCount", "desc"),
+      limit(3)
+    );
+
+    const snapshot = await getDocs(q);
+    const consultants = await Promise.all(
+      snapshot.docs.map(async (docSnap) => {
+        const consultantData = docSnap.data() as Consultant;
+        const userRef = doc(db, "users", consultantData.cid);
+        const userSnap = await getDoc(userRef);
+        if (!userSnap.exists()) {
+          console.warn(
+            `User data not found for consultant ID: ${consultantData.cid}`
+          );
+          return null;
+        }
+        const userData = userSnap.data() as User;
+        return { ...userData, ...consultantData } as ConsultantUser;
+      })
+    );
+    return consultants.filter((c): c is ConsultantUser => c !== null);
+  } catch (error) {
+    console.error("Error fetching top consultants:", error);
+    return [];
+  }
+};
+
 export const fetchConsultantServices = async (
   sid: string[]
 ): Promise<Services[]> => {
@@ -151,5 +188,65 @@ export const fetchConsultantsByService = async (
   } catch (error) {
     console.error("Error fetching consultants by service:", error);
     return [];
+  }
+};
+
+export const getPaginatedConsultantsForService = async (
+  serviceId: string,
+  lastDoc: QueryDocumentSnapshot<DocumentData> | null = null
+): Promise<{
+  consultants: ConsultantUser[];
+  lastDoc: QueryDocumentSnapshot<DocumentData> | null;
+}> => {
+  try {
+    const topConsultants = await getTopConsultants(serviceId);
+    const topConsultantIds = topConsultants.map((c) => c.cid);
+
+    let q = query(
+      collection(db, "consultants"),
+      where("services", "array-contains", serviceId),
+      where("cid", "not-in", topConsultantIds),
+      orderBy("avgRating", "desc"),
+      orderBy("reviewCount", "desc"),
+      limit(CONSULTANTS_PER_PAGE)
+    );
+
+    if (lastDoc) {
+      q = query(q, startAfter(lastDoc));
+    }
+
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      return { consultants: [], lastDoc: null };
+    }
+
+    const consultantsData: Consultant[] = snapshot.docs.map(
+      (doc) =>
+        ({
+          cid: doc.id,
+          ...doc.data(),
+        } as Consultant)
+    );
+
+    const consultantsWithUserData: ConsultantUser[] = await Promise.all(
+      consultantsData.map(async (consultant) => {
+        const userDocRef = doc(db, "users", consultant.cid);
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (userDocSnap.exists()) {
+          return { ...userDocSnap.data(), ...consultant } as ConsultantUser;
+        } else {
+          return consultant as ConsultantUser;
+        }
+      })
+    );
+
+    const newLastDoc = snapshot.docs[snapshot.docs.length - 1];
+
+    return { consultants: consultantsWithUserData, lastDoc: newLastDoc };
+  } catch (error) {
+    console.error("Error fetching consultants:", error);
+    return { consultants: [], lastDoc: null };
   }
 };
