@@ -22,8 +22,6 @@ export default function StaticConsultantList({
   showViewConsultants,
   closeViewConsultants,
 }: StaticConsultantListProps) {
-  console.log(topConsultants, allConsultants);
-
   return (
     <>
       <h2 className="text-2xl md:text-3xl font-bold mb-8 dark:text-white text-textHeading">
