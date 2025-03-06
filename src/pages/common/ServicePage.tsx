@@ -1,48 +1,74 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Services } from "../../types/Services";
 import { ConsultantUser } from "../../types/Users";
 import { fetchService } from "../../core/services/ServiceManager";
 import { FaSpinner, FaSearch } from "react-icons/fa";
-import { fetchConsultantsByService } from "../../core/services/ConsultantService";
+import {
+  getPaginatedConsultantsForService,
+  getTopConsultants,
+} from "../../core/services/ConsultantService";
 import ConsultantCard from "../../components/services/ConsultantCard";
 import ServiceHeader from "../../components/services/ServiceHeader";
 import StaticConsultantList from "../../components/services/StaticConsultantList";
+import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
 export default function ServicePage() {
   const [service, setService] = useState<Services | null>(null);
-  const [consultants, setConsultants] = useState<ConsultantUser[]>([]);
+  const [topConsultants, setTopConsultants] = useState<ConsultantUser[]>([]);
+  const [allConsultants, setAllConsultants] = useState<ConsultantUser[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoadingConsultants, setIsLoadingConsultants] =
+    useState<boolean>(false);
   const [isViewAllConsultants, setIsViewAllConsultants] =
     useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [lastDoc, setLastDoc] =
+    useState<QueryDocumentSnapshot<DocumentData> | null>(null);
+  const [hasMore, setHasMore] = useState(true);
+
   const { id } = useParams<{ id: string }>();
+
+  const loadConsultants = useCallback(async () => {
+    if (!hasMore || isLoadingConsultants || !id) return;
+
+    setIsLoadingConsultants(true);
+    const { consultants: newConsultants, lastDoc: newLastDoc } =
+      await getPaginatedConsultantsForService(id, lastDoc);
+
+    if (newConsultants.length === 0) {
+      setHasMore(false);
+    } else {
+      setAllConsultants((prev) => [...prev, ...newConsultants]);
+      setLastDoc(newLastDoc);
+    }
+
+    setIsLoadingConsultants(false);
+  }, [lastDoc, hasMore, isLoadingConsultants, id]);
 
   useEffect(() => {
     const handleFetchService = async () => {
       setIsLoading(true);
       if (!id) return;
       const response = await fetchService(id);
-      const consultants = await fetchConsultantsByService(id);
+      const consultants = await getTopConsultants(id);
       setService(response);
-
-      setConsultants(consultants);
-
+      setTopConsultants(consultants);
+      loadConsultants();
       setIsLoading(false);
     };
 
     handleFetchService();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  const filteredConsultants = consultants.filter((consultant) => {
-    return consultant.userName.toLowerCase().includes(searchTerm.toLowerCase());
-  });
-
-  const topConsultants = [...consultants]
-    .sort((a, b) => b.avgRating - a.avgRating)
-    .slice(0, 3);
-
-  const allConsultants = consultants.filter((c) => !topConsultants.includes(c));
+  const filteredConsultants = [...topConsultants, ...allConsultants].filter(
+    (consultant) => {
+      return consultant.userName
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+    }
+  );
 
   if (isLoading) {
     return (
@@ -78,6 +104,7 @@ export default function ServicePage() {
             </div>
           </div>
         </div>
+
         {searchTerm && filteredConsultants.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredConsultants.map((consultant) => (
@@ -94,6 +121,9 @@ export default function ServicePage() {
             topConsultants={topConsultants}
             allConsultants={allConsultants}
             isViewAllConsultants={isViewAllConsultants}
+            hasMore={hasMore}
+            isLoading={isLoadingConsultants}
+            loadMore={loadConsultants}
             showViewConsultants={() => setIsViewAllConsultants(true)}
             closeViewConsultants={() => setIsViewAllConsultants(false)}
           />

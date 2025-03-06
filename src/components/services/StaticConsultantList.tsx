@@ -1,3 +1,4 @@
+import { FaSpinner } from "react-icons/fa";
 import { ConsultantUser } from "../../types/Users";
 import ConsultantCard from "./ConsultantCard";
 
@@ -5,6 +6,9 @@ interface StaticConsultantListProps {
   topConsultants: ConsultantUser[];
   allConsultants: ConsultantUser[];
   isViewAllConsultants: boolean;
+  hasMore: boolean;
+  isLoading: boolean;
+  loadMore: () => void;
   showViewConsultants: () => void;
   closeViewConsultants: () => void;
 }
@@ -12,9 +16,14 @@ export default function StaticConsultantList({
   topConsultants,
   allConsultants,
   isViewAllConsultants,
+  hasMore,
+  isLoading,
+  loadMore,
   showViewConsultants,
   closeViewConsultants,
 }: StaticConsultantListProps) {
+  console.log(topConsultants, allConsultants);
+
   return (
     <>
       <h2 className="text-2xl md:text-3xl font-bold mb-8 dark:text-white text-textHeading">
@@ -60,13 +69,27 @@ export default function StaticConsultantList({
             ))}
           </div>
 
-          <div className="mt-12 text-center">
+          {isLoading && (
+            <div className="flex justify-center my-5">
+              <FaSpinner size={40} className="animate-spin text-primaryRed" />
+            </div>
+          )}
+
+          <div className="mt-12 flex items-start gap-3 justify-center">
             <button
               onClick={closeViewConsultants}
               className="bg-white dark:bg-darkThemeSecondary border border-primaryRed text-primaryRed hover:bg-primaryRed hover:text-white font-medium py-2 px-8 rounded-lg transition-colors"
             >
               Hide All Consultants
             </button>
+            {hasMore && !isLoading && (
+              <button
+                onClick={loadMore}
+                className="bg-white dark:bg-darkThemeSecondary border border-primaryRed text-primaryRed hover:bg-primaryRed hover:text-white font-medium py-2 px-8 rounded-lg transition-colors"
+              >
+                Load More
+              </button>
+            )}
           </div>
         </div>
       )}
