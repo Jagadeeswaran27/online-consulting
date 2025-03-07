@@ -9,6 +9,7 @@ export default {
       },
       boxShadow: {
         customLight: "0px 2px 10px rgba(0,0,0,0.2)",
+        profileCard: "0px 4px 12px rgba(0,0,0,0.08)",
       },
       colors: {
         primaryRed: "#ed2a4f",
@@ -29,6 +30,17 @@ export default {
           dark: "#9ca3af", // gray-400 for dark mode
         },
         textStar: "#eab308", // yellow-500
+        cardBg: {
+          DEFAULT: "#f9fafb", // gray-50
+          dark: "#1F1F1F",
+        },
+        reviewCard: {
+          DEFAULT: "#f3f4f6", // gray-100
+          dark: "#262626",
+        },
+      },
+      borderWidth: {
+        3: "3px",
       },
     },
   },

@@ -112,7 +112,7 @@ export default function ServicePage() {
                 key={consultant.cid}
                 className="bg-white dark:bg-darkThemeCard rounded-xl shadow-customLight p-6 "
               >
-                <ConsultantCard consultant={consultant} />
+                <ConsultantCard sid={id!} consultant={consultant} />
               </div>
             ))}
           </div>
@@ -123,6 +123,7 @@ export default function ServicePage() {
             isViewAllConsultants={isViewAllConsultants}
             hasMore={hasMore}
             isLoading={isLoadingConsultants}
+            sid={id!}
             loadMore={loadConsultants}
             showViewConsultants={() => setIsViewAllConsultants(true)}
             closeViewConsultants={() => setIsViewAllConsultants(false)}

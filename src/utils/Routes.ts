@@ -5,6 +5,7 @@ export const Routes = {
   about: "/about",
   services: "/services",
   service: "/services/:id",
+  serviceConsultantProfile: "/services/:id/profile/:cid",
   consultantSignup: "/consultant-signup",
   adminDashboard: "/admin-dashboard",
   consultantDashboard: "/consultant-dashboard",

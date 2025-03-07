@@ -8,6 +8,7 @@ interface StaticConsultantListProps {
   isViewAllConsultants: boolean;
   hasMore: boolean;
   isLoading: boolean;
+  sid: string;
   loadMore: () => void;
   showViewConsultants: () => void;
   closeViewConsultants: () => void;
@@ -18,6 +19,7 @@ export default function StaticConsultantList({
   isViewAllConsultants,
   hasMore,
   isLoading,
+  sid,
   loadMore,
   showViewConsultants,
   closeViewConsultants,
@@ -34,7 +36,7 @@ export default function StaticConsultantList({
             key={consultant.cid}
             className="bg-white dark:bg-darkThemeCard rounded-xl shadow-customLight p-6 "
           >
-            <ConsultantCard consultant={consultant} />
+            <ConsultantCard sid={sid} consultant={consultant} />
           </div>
         ))}
       </div>
@@ -62,7 +64,7 @@ export default function StaticConsultantList({
                 key={consultant.cid}
                 className="bg-white dark:bg-darkThemeCard rounded-xl shadow-customLight p-6 "
               >
-                <ConsultantCard consultant={consultant} />
+                <ConsultantCard sid={sid} consultant={consultant} />
               </div>
             ))}
           </div>

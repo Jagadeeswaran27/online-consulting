@@ -3,6 +3,7 @@ import ourMission from "../assets/images/our-mission.svg";
 import ourVision from "../assets/images/our-vision.svg";
 import ourTeam from "../assets/images/our-team.svg";
 import defaultAvatar from "../assets/images/default-avatar.jpg";
+import profileBg from "../assets/images/profile-bg.jpeg";
 
 export const Images = {
   hero,
@@ -10,5 +11,6 @@ export const Images = {
   ourVision,
   ourTeam,
   defaultAvatar,
+  profileBg,
   placeholderImage: "https://placehold.co/600x400",
 };
