@@ -7,12 +7,15 @@ import { Routes } from "../../utils/Routes";
 
 interface ConsultantCardProps {
   consultant: ConsultantUser;
-  sid: string;
+  sid?: string;
 }
 export default function ConsultantCard({
   sid,
   consultant,
 }: ConsultantCardProps) {
+  const routePath = sid
+    ? `${Routes.services}/${sid}/profile/${consultant.cid}`
+    : `profile/${consultant.cid}`;
   return (
     <>
       <div className="flex items-center mb-4">
@@ -50,7 +53,7 @@ export default function ConsultantCard({
           Experience: {consultant.experience}
         </span>
         <Link
-          to={`${Routes.services}/${sid}/profile/${consultant.cid}`}
+          to={routePath}
           className="text-primaryRed hover:text-secondaryRed font-medium text-sm transition-colors"
         >
           View Profile

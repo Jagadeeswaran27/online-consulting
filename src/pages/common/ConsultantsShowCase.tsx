@@ -1,40 +1,32 @@
 import { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Services } from "../../types/Services";
-import { ConsultantUser } from "../../types/Users";
-import { fetchService } from "../../core/services/ServiceManager";
-import { FaSpinner, FaSearch } from "react-icons/fa";
-import {
-  getPaginatedConsultantsForService,
-  getTopConsultants,
-} from "../../core/services/ConsultantService";
+import { FaSearch, FaSpinner } from "react-icons/fa";
 import ConsultantCard from "../../components/services/ConsultantCard";
-import ServiceHeader from "../../components/services/ServiceHeader";
 import StaticConsultantList from "../../components/services/StaticConsultantList";
+import { ConsultantUser } from "../../types/Users";
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
+import {
+  getAllPaginatedConsultants,
+  getAllTopConsultants,
+} from "../../core/services/ConsultantService";
 
-export default function ServicePage() {
-  const [service, setService] = useState<Services | null>(null);
+export default function ConsultantsShowCase() {
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [topConsultants, setTopConsultants] = useState<ConsultantUser[]>([]);
   const [allConsultants, setAllConsultants] = useState<ConsultantUser[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const [isLoadingConsultants, setIsLoadingConsultants] =
     useState<boolean>(false);
-  const [isViewAllConsultants, setIsViewAllConsultants] =
-    useState<boolean>(false);
-  const [searchTerm, setSearchTerm] = useState<string>("");
   const [lastDoc, setLastDoc] =
     useState<QueryDocumentSnapshot<DocumentData> | null>(null);
   const [hasMore, setHasMore] = useState(true);
 
-  const { id } = useParams<{ id: string }>();
-
   const loadConsultants = useCallback(async () => {
-    if (!hasMore || isLoadingConsultants || !id) return;
+    if (!hasMore || isLoadingConsultants) return;
 
     setIsLoadingConsultants(true);
     const { consultants: newConsultants, lastDoc: newLastDoc } =
-      await getPaginatedConsultantsForService(id, lastDoc);
+      await getAllPaginatedConsultants(lastDoc);
 
     if (newConsultants.length === 0) {
       setHasMore(false);
@@ -44,15 +36,12 @@ export default function ServicePage() {
     }
 
     setIsLoadingConsultants(false);
-  }, [lastDoc, hasMore, isLoadingConsultants, id]);
+  }, [lastDoc, hasMore, isLoadingConsultants]);
 
   useEffect(() => {
     const handleFetchService = async () => {
       setIsLoading(true);
-      if (!id) return;
-      const response = await fetchService(id);
-      const consultants = await getTopConsultants(id);
-      setService(response);
+      const consultants = await getAllTopConsultants();
       setTopConsultants(consultants);
       loadConsultants();
       setIsLoading(false);
@@ -60,7 +49,7 @@ export default function ServicePage() {
 
     handleFetchService();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, []);
 
   const filteredConsultants = [...topConsultants, ...allConsultants].filter(
     (consultant) => {
@@ -78,17 +67,8 @@ export default function ServicePage() {
     );
   }
 
-  if (!service) {
-    return (
-      <div className="flex justify-center items-center min-h-[calc(100vh-81px)]">
-        <p className="text-lg text-textMuted">Service not found</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="bg-white dark:bg-darkTheme min-h-screen">
-      <ServiceHeader service={service} />
+    <div className="min-h-screen">
       <div className="container mx-auto max-w-6xl px-6 py-12">
         <div className="mb-8">
           <div className="relative">
@@ -112,7 +92,7 @@ export default function ServicePage() {
                 key={consultant.cid}
                 className="bg-white dark:bg-darkThemeCard rounded-xl shadow-customLight p-6 "
               >
-                <ConsultantCard sid={id!} consultant={consultant} />
+                <ConsultantCard consultant={consultant} />
               </div>
             ))}
           </div>
@@ -120,13 +100,11 @@ export default function ServicePage() {
           <StaticConsultantList
             topConsultants={topConsultants}
             allConsultants={allConsultants}
-            isViewAllConsultants={isViewAllConsultants}
             hasMore={hasMore}
             isLoading={isLoadingConsultants}
-            sid={id!}
             loadMore={loadConsultants}
-            showViewConsultants={() => setIsViewAllConsultants(true)}
-            closeViewConsultants={() => setIsViewAllConsultants(false)}
+            showViewConsultants={() => {}}
+            closeViewConsultants={() => {}}
           />
         )}
       </div>
