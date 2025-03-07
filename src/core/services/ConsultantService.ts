@@ -14,8 +14,12 @@ import {
 import { db } from "../config/Firebase";
 import { Consultant, ConsultantUser, User } from "../../types/Users";
 import { Services } from "../../types/Services";
-
-const CONSULTANTS_PER_PAGE = 1;
+import { Rating, RatingsWithUserName } from "../../types/Ratings";
+import {
+  CONSULTANTS_PER_PAGE,
+  RATINGS_PER_PAGE,
+} from "../../constants/LazyLoadingLimits";
+// import { Rating, RatingsWithUserName } from "../../types/Ratings";
 
 export const fetchConsultants = async (
   lastDoc: QueryDocumentSnapshot<DocumentData> | null = null
@@ -249,4 +253,58 @@ export const getPaginatedConsultantsForService = async (
     console.error("Error fetching consultants:", error);
     return { consultants: [], lastDoc: null };
   }
+};
+
+export const getPaginatedConsultantRatings = async (
+  consultantId: string,
+  lastDoc: QueryDocumentSnapshot<DocumentData> | null = null
+): Promise<{
+  ratings: RatingsWithUserName[];
+  lastDoc: QueryDocumentSnapshot<DocumentData> | null;
+}> => {
+  try {
+    const reviewsRef = collection(db, `consultants/${consultantId}/reviews`);
+    let q = query(reviewsRef, limit(RATINGS_PER_PAGE));
+
+    if (lastDoc) {
+      q = query(q, startAfter(lastDoc));
+    }
+
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      return { ratings: [], lastDoc: null };
+    }
+
+    const ratingsData = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as Rating),
+    }));
+
+    const ratingsWithUserNames = await Promise.all(
+      ratingsData.map(async (rating) => {
+        const userName = await getRatingUserName(rating.uid);
+        return {
+          ...rating,
+          userName,
+        } as RatingsWithUserName;
+      })
+    );
+
+    const newLastDoc = snapshot.docs[snapshot.docs.length - 1];
+
+    return { ratings: ratingsWithUserNames, lastDoc: newLastDoc };
+  } catch (error) {
+    console.error("Error fetching consultant ratings:", error);
+    return { ratings: [], lastDoc: null };
+  }
+};
+
+export const getRatingUserName = async (uid: string): Promise<string> => {
+  const userDocRef = doc(db, "users", uid);
+  const userDoc = await getDoc(userDocRef);
+  if (userDoc.exists()) {
+    return userDoc.data()?.userName;
+  }
+  return "";
 };

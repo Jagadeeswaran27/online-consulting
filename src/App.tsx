@@ -24,6 +24,7 @@ import PendingApplications from "./pages/admin/PendingApplications";
 import ManageConsultant from "./pages/admin/ManageConsultant";
 import LoadingWrapper from "./components/common/LoadingWrapper";
 import ServicePage from "./pages/common/ServicePage";
+import ConsultantProfile from "./pages/common/ConsultantProfile";
 
 export default function App() {
   return (
@@ -57,11 +58,12 @@ export default function App() {
             />
             <Route
               path={AppRoutes.service}
-              element={
-                <ProtectedRoute
-                  element={<LoadingWrapper element={<ServicePage />} />}
-                />
-              }
+              element={<ProtectedRoute element={<ServicePage />} />}
+            />
+
+            <Route
+              path={AppRoutes.serviceConsultantProfile}
+              element={<ProtectedRoute element={<ConsultantProfile />} />}
             />
             <Route
               path={AppRoutes.consultantDashboard}

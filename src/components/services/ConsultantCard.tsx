@@ -2,11 +2,17 @@ import { FaUserCircle } from "react-icons/fa";
 import { Images } from "../../resources/Images";
 import { ConsultantUser } from "../../types/Users";
 import RenderStars from "./RenderStars";
+import { Link } from "react-router-dom";
+import { Routes } from "../../utils/Routes";
 
 interface ConsultantCardProps {
   consultant: ConsultantUser;
+  sid: string;
 }
-export default function ConsultantCard({ consultant }: ConsultantCardProps) {
+export default function ConsultantCard({
+  sid,
+  consultant,
+}: ConsultantCardProps) {
   return (
     <>
       <div className="flex items-center mb-4">
@@ -43,9 +49,12 @@ export default function ConsultantCard({ consultant }: ConsultantCardProps) {
         <span className="text-sm font-medium text-textMuted dark:text-textMuted-dark">
           Experience: {consultant.experience}
         </span>
-        <button className="text-primaryRed hover:text-secondaryRed font-medium text-sm transition-colors">
+        <Link
+          to={`${Routes.services}/${sid}/profile/${consultant.cid}`}
+          className="text-primaryRed hover:text-secondaryRed font-medium text-sm transition-colors"
+        >
           View Profile
-        </button>
+        </Link>
       </div>
     </>
   );

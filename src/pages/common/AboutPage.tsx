@@ -88,6 +88,33 @@ export default function AboutPage() {
             to create a trusted space for professional consultation.
           </p>
         </div>
+        {/* Will include the real analytcs here! */}
+        <div className="mt-16 sm:mt-24 md:mt-32">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            <div className="bg-white dark:bg-darkThemeCard p-6 rounded-xl shadow-profileCard">
+              <div className="text-4xl font-bold text-primaryRed mb-2">
+                100+
+              </div>
+              <div className="text-textHeading dark:text-white font-medium">
+                Expert Consultants
+              </div>
+            </div>
+            <div className="bg-white dark:bg-darkThemeCard p-6 rounded-xl shadow-profileCard">
+              <div className="text-4xl font-bold text-primaryRed mb-2">
+                5,000+
+              </div>
+              <div className="text-textHeading dark:text-white font-medium">
+                Satisfied Clients
+              </div>
+            </div>
+            <div className="bg-white dark:bg-darkThemeCard p-6 rounded-xl shadow-profileCard">
+              <div className="text-4xl font-bold text-primaryRed mb-2">10+</div>
+              <div className="text-textHeading dark:text-white font-medium">
+                Industry Categories
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
