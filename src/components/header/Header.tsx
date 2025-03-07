@@ -73,9 +73,12 @@ export default function Header() {
           >
             Services
           </Link>
-          <p className="hover:text-primaryRed cursor-pointer transition-all duration-300">
+          <Link
+            to={Routes.ourConsultants}
+            className="hover:text-primaryRed cursor-pointer transition-all duration-300"
+          >
             Our Consultants
-          </p>
+          </Link>
         </nav>
       </div>
       {!loading && (
@@ -174,18 +177,11 @@ export default function Header() {
               About Us
             </Link>
             <Link
-              to="#"
+              to={Routes.ourConsultants}
               onClick={toggleMenu}
               className="text-lg hover:text-primaryRed pb-1  transition-all duration-300"
             >
               Our Consultants
-            </Link>
-            <Link
-              to="#"
-              onClick={toggleMenu}
-              className="text-lg hover:text-primaryRed pb-1  transition-all duration-300"
-            >
-              Contact Us
             </Link>
           </nav>
 

@@ -308,3 +308,94 @@ export const getRatingUserName = async (uid: string): Promise<string> => {
   }
   return "";
 };
+
+export const getAllTopConsultants = async (): Promise<ConsultantUser[]> => {
+  try {
+    const consultantsRef = collection(db, "consultants");
+    const q = query(
+      consultantsRef,
+      orderBy("avgRating", "desc"),
+      orderBy("reviewCount", "desc"),
+      limit(3)
+    );
+
+    const snapshot = await getDocs(q);
+    const consultants = await Promise.all(
+      snapshot.docs.map(async (docSnap) => {
+        const consultantData = docSnap.data() as Consultant;
+        const userRef = doc(db, "users", consultantData.cid);
+        const userSnap = await getDoc(userRef);
+        if (!userSnap.exists()) {
+          console.warn(
+            `User data not found for consultant ID: ${consultantData.cid}`
+          );
+          return null;
+        }
+        const userData = userSnap.data() as User;
+        return { ...userData, ...consultantData } as ConsultantUser;
+      })
+    );
+    return consultants.filter((c): c is ConsultantUser => c !== null);
+  } catch (error) {
+    console.error("Error fetching top consultants:", error);
+    return [];
+  }
+};
+
+export const getAllPaginatedConsultants = async (
+  lastDoc: QueryDocumentSnapshot<DocumentData> | null = null
+): Promise<{
+  consultants: ConsultantUser[];
+  lastDoc: QueryDocumentSnapshot<DocumentData> | null;
+}> => {
+  try {
+    const topConsultants = await getAllTopConsultants();
+    const topConsultantIds = topConsultants.map((c) => c.cid);
+
+    let q = query(
+      collection(db, "consultants"),
+      where("cid", "not-in", topConsultantIds),
+      orderBy("avgRating", "desc"),
+      orderBy("reviewCount", "desc"),
+      limit(CONSULTANTS_PER_PAGE)
+    );
+
+    if (lastDoc) {
+      q = query(q, startAfter(lastDoc));
+    }
+
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      return { consultants: [], lastDoc: null };
+    }
+
+    const consultantsData: Consultant[] = snapshot.docs.map(
+      (doc) =>
+        ({
+          cid: doc.id,
+          ...doc.data(),
+        } as Consultant)
+    );
+
+    const consultantsWithUserData: ConsultantUser[] = await Promise.all(
+      consultantsData.map(async (consultant) => {
+        const userDocRef = doc(db, "users", consultant.cid);
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (userDocSnap.exists()) {
+          return { ...userDocSnap.data(), ...consultant } as ConsultantUser;
+        } else {
+          return consultant as ConsultantUser;
+        }
+      })
+    );
+
+    const newLastDoc = snapshot.docs[snapshot.docs.length - 1];
+
+    return { consultants: consultantsWithUserData, lastDoc: newLastDoc };
+  } catch (error) {
+    console.error("Error fetching consultants:", error);
+    return { consultants: [], lastDoc: null };
+  }
+};

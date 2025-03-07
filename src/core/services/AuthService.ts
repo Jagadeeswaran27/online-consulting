@@ -69,10 +69,17 @@ export const googleLogin = async (): Promise<User | null> => {
     const userDocRef = doc(db, "users", userCredential.user.uid);
     const userDoc = await getDoc(userDocRef);
 
-    let user: User | null = null;
+    let user: User;
 
     if (userDoc.exists()) {
       user = userDoc.data() as User;
+    } else {
+      user = {
+        email: userCredential.user.email || "",
+        userName: userCredential.user.displayName || "",
+        uid: userCredential.user.uid,
+        type: "user",
+      };
     }
 
     await setDoc(userDocRef, user as User, { merge: true });

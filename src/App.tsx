@@ -25,6 +25,7 @@ import ManageConsultant from "./pages/admin/ManageConsultant";
 import LoadingWrapper from "./components/common/LoadingWrapper";
 import ServicePage from "./pages/common/ServicePage";
 import ConsultantProfile from "./pages/common/ConsultantProfile";
+import ConsultantsShowCase from "./pages/common/ConsultantsShowCase";
 
 export default function App() {
   return (
@@ -64,6 +65,11 @@ export default function App() {
             <Route
               path={AppRoutes.serviceConsultantProfile}
               element={<ProtectedRoute element={<ConsultantProfile />} />}
+            />
+
+            <Route
+              path={AppRoutes.ourConsultants}
+              element={<ProtectedRoute element={<ConsultantsShowCase />} />}
             />
             <Route
               path={AppRoutes.consultantDashboard}

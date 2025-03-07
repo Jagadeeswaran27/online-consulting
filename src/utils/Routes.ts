@@ -9,6 +9,7 @@ export const Routes = {
   consultantSignup: "/consultant-signup",
   adminDashboard: "/admin-dashboard",
   consultantDashboard: "/consultant-dashboard",
+  ourConsultants: "/our-consultants",
   userDashboard: "/user-dashboard",
   settings: "/settings",
 };
