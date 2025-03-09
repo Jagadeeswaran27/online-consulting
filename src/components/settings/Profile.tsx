@@ -6,6 +6,7 @@ import { FaSpinner } from "react-icons/fa";
 import {
   updateUserName,
   uploadProfileImage,
+  updateUserContact,
 } from "../../core/services/SettingsServices";
 import { AuthContext } from "../../store/context/auth";
 import { Images } from "../../resources/Images";
@@ -18,12 +19,15 @@ interface ProfileProps {
 export default function Profile({ user }: ProfileProps) {
   const [editableUserName, setEditableUserName] = useState(user.userName);
   const [editablePhotoURL, setEditablePhotoURL] = useState(user.photoURL);
+  const [editableContact, setEditableContact] = useState(user.contact);
   const [isNameEditing, setIsNameEditing] = useState(false);
+  const [isContactEditing, setIsContactEditing] = useState(false);
   const imageRef = useRef<HTMLInputElement>(null);
   const [isImageSelected, setIsImageSelected] = useState(false);
   const [isImageSaving, setIsImageSaving] = useState(false);
 
-  const { changePhotoUrl, changeUserName } = useContext(AuthContext);
+  const { changePhotoUrl, changeUserName, changeContact } =
+    useContext(AuthContext);
 
   const handleClickEditImage = () => {
     if (imageRef.current) {
@@ -70,6 +74,18 @@ export default function Profile({ user }: ProfileProps) {
     } else {
       showToast({ message: "Failed to update name", type: "error" });
       setEditableUserName(user.userName);
+    }
+  };
+
+  const handleSaveContact = async () => {
+    setIsContactEditing(false);
+    const result = await updateUserContact(editableContact);
+    if (result) {
+      changeContact(editableContact);
+      showToast({ message: "Contact updated successfully", type: "success" });
+    } else {
+      showToast({ message: "Failed to update contact", type: "error" });
+      setEditableContact(user.contact);
     }
   };
 
@@ -146,6 +162,34 @@ export default function Profile({ user }: ProfileProps) {
               {!isNameEditing && (
                 <MdEdit
                   onClick={() => setIsNameEditing(true)}
+                  className="cursor-pointer"
+                />
+              )}
+            </p>
+          )}
+        </div>
+        <div>
+          <label className="text-sm font-semibold text-gray-500">Contact</label>
+          {isContactEditing ? (
+            <div className="w-full max-w-[300px] mt-2 flex gap-2 items-center">
+              <input
+                type="text"
+                value={editableContact}
+                onChange={(e) => setEditableContact(e.target.value)}
+                className="w-full pl-5 py-2 border border-gray-600 dark:bg-darkThemeSecondary rounded-lg focus:outline-none"
+              />
+              <BiCheckCircle
+                onClick={handleSaveContact}
+                size={30}
+                className="cursor-pointer"
+              />
+            </div>
+          ) : (
+            <p className="text-lg flex gap-2 items-center font-medium mt-2">
+              {editableContact}{" "}
+              {!isContactEditing && (
+                <MdEdit
+                  onClick={() => setIsContactEditing(true)}
                   className="cursor-pointer"
                 />
               )}

@@ -115,3 +115,20 @@ export const changeContactPreference = async (
     return false;
   }
 };
+
+export const updateUserContact = async (
+  newContact: string
+): Promise<boolean> => {
+  if (!auth.currentUser) return false;
+  try {
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    await updateDoc(userRef, {
+      contact: newContact,
+    });
+
+    return true;
+  } catch (error) {
+    console.error("Error updating contact:", error);
+    return false;
+  }
+};

@@ -26,6 +26,7 @@ import LoadingWrapper from "./components/common/LoadingWrapper";
 import ServicePage from "./pages/common/ServicePage";
 import ConsultantProfile from "./pages/common/ConsultantProfile";
 import ConsultantsShowCase from "./pages/common/ConsultantsShowCase";
+import BecomeConsultant from "./pages/consultants/BecomeConsultant";
 
 export default function App() {
   return (
@@ -36,14 +37,17 @@ export default function App() {
         <Routes>
           <Route path={AppRoutes.home} element={<RootPage />}>
             <Route index element={<HomePage />} />
+
             <Route
               path={AppRoutes.about}
               element={<LoadingWrapper element={<AboutPage />} />}
             />
+
             <Route
               path={AppRoutes.login}
               element={<RedirectAuthenticated element={<LoginPage />} />}
             />
+
             <Route
               path={AppRoutes.signup}
               element={<RedirectAuthenticated element={<SignupPage />} />}
@@ -57,6 +61,7 @@ export default function App() {
                 />
               }
             />
+
             <Route
               path={AppRoutes.service}
               element={<ProtectedRoute element={<ServicePage />} />}
@@ -71,6 +76,17 @@ export default function App() {
               path={AppRoutes.ourConsultants}
               element={<ProtectedRoute element={<ConsultantsShowCase />} />}
             />
+
+            <Route
+              path={AppRoutes.ourConsultantsProfile}
+              element={<ProtectedRoute element={<ConsultantProfile />} />}
+            />
+
+            <Route
+              path={AppRoutes.becomeConsultant}
+              element={<ProtectedRoute element={<BecomeConsultant />} />}
+            />
+
             <Route
               path={AppRoutes.consultantDashboard}
               element={<ProtectedRoute element={<Dashboad />} />}
@@ -83,24 +99,30 @@ export default function App() {
                 index
                 element={<Navigate to={AdminRoutes.services} replace />}
               />
+
               <Route path={AdminRoutes.services} element={<ManageServices />} />
+
               <Route
                 path={AdminRoutes.consultants}
                 element={<ManageConsultants />}
               />
+
               <Route
                 path={AdminRoutes.applications}
                 element={<PendingApplications />}
               />
+
               <Route
                 path={AdminRoutes.manageConsultant}
                 element={<ManageConsultant />}
               />
             </Route>
+
             <Route
               path={AppRoutes.settings}
               element={<ProtectedRoute element={<SettingsPage />} />}
             />
+
             <Route path="*" element={<Error404 />} />
           </Route>
         </Routes>

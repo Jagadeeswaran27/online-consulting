@@ -1,9 +1,19 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { FiSettings, FiUsers, FiFileText } from "react-icons/fi";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { subscribeToPendingApplications } from "../../core/services/AdminService";
 
 export default function AdminDashboard() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const [pendingCount, setPendingCount] = useState<number>(0);
+
+  useEffect(() => {
+    const unsubscribe = subscribeToPendingApplications((applications) => {
+      setPendingCount(applications.length);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div
@@ -13,9 +23,6 @@ export default function AdminDashboard() {
         maxHeight: "calc(100vh - 81px)",
       }}
     >
-      {/* Mobile Header */}
-
-      {/* Sidebar - hidden on mobile, visible on medium screens and up */}
       <div
         className={`
           border-gray-500 border-r-2 
@@ -68,6 +75,11 @@ export default function AdminDashboard() {
           >
             <FiFileText className="w-5 h-5" />
             <span className="ml-3">Pending Applications</span>
+            {pendingCount > 0 && (
+              <span className="ml-2 bg-primaryRed text-white text-xs font-medium rounded-full w-5 h-5 flex items-center justify-center">
+                {pendingCount}
+              </span>
+            )}
           </NavLink>
         </nav>
       </div>
@@ -104,7 +116,7 @@ export default function AdminDashboard() {
             <NavLink
               to="/admin-dashboard/applications"
               className={({ isActive }) =>
-                `whitespace-nowrap px-3 py-1 rounded-full ${
+                `relative whitespace-nowrap px-3 py-1 rounded-full ${
                   isActive
                     ? "bg-primaryRed text-white"
                     : "bg-gray-200 dark:bg-darkThemeSecondary"
@@ -112,6 +124,11 @@ export default function AdminDashboard() {
               }
             >
               Applications
+              {pendingCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-primaryRed text-white text-xs font-medium rounded-full w-5 h-5 flex items-center justify-center">
+                  {pendingCount}
+                </span>
+              )}
             </NavLink>
           </div>
         </div>

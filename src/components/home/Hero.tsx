@@ -31,7 +31,7 @@ export default function Hero() {
             Browse Services
           </Link>
           <Link
-            to={Routes.consultantSignup}
+            to={Routes.becomeConsultant}
             className="text-white bg-black border-black border-2 py-[6px] px-3 font-semibold hover:bg-darkThemeSecondary hover:border-gray-800 hover:text-white transition-all duration-300 shadow-lg text-center"
           >
             Become a Consultant

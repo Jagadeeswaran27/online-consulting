@@ -54,16 +54,22 @@ export default function AuthContextProvider({
       setUser({ ...user, photoURL: newPhotoUrl });
     }
   };
+  const changeContact = (newContact: string) => {
+    if (user) {
+      setUser({ ...user, contact: newContact });
+    }
+  };
 
   return (
     <AuthContext.Provider
       value={{
         user,
         loading,
-        toggleTheme,
         theme,
+        toggleTheme,
         changePhotoUrl,
         changeUserName,
+        changeContact,
       }}
     >
       {children}
