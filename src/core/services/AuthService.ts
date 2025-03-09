@@ -13,7 +13,8 @@ import { User } from "../../types/Users";
 export const signup = async (
   email: string,
   password: string,
-  userName: string
+  userName: string,
+  contact: string
 ): Promise<boolean> => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
@@ -27,6 +28,7 @@ export const signup = async (
         userName,
         email,
         uid: userCredential.user.uid,
+        contact,
         type: "user",
       } as User);
       return true;
@@ -79,6 +81,8 @@ export const googleLogin = async (): Promise<User | null> => {
         userName: userCredential.user.displayName || "",
         uid: userCredential.user.uid,
         type: "user",
+        photoURL: userCredential.user.photoURL || "",
+        contact: userCredential.user.phoneNumber || "",
       };
     }
 

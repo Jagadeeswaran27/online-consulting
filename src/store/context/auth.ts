@@ -7,6 +7,7 @@ interface AuthContextType {
   toggleTheme: () => void;
   changeUserName: (newName: string) => void;
   changePhotoUrl: (newPhotoUrl: string) => void;
+  changeContact: (newContact: string) => void;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -16,4 +17,5 @@ export const AuthContext = createContext<AuthContextType>({
   toggleTheme: () => {},
   changeUserName: () => {},
   changePhotoUrl: () => {},
+  changeContact: () => {},
 });

@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { FaUser, FaLock, FaEye, FaEyeSlash, FaEnvelope } from "react-icons/fa";
+import {
+  FaUser,
+  FaLock,
+  FaEye,
+  FaEyeSlash,
+  FaEnvelope,
+  FaPhone,
+} from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { Routes } from "../../utils/Routes";
 import PrimaryAuthButton from "../../components/common/PrimaryAuthButton";
@@ -13,6 +20,7 @@ import { showToast } from "../../utils/Toast";
 export default function SignupPage() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [contact, setContact] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -34,6 +42,9 @@ export default function SignupPage() {
     if (!username) newErrors.username = "Username is required";
     if (!email) newErrors.email = "Email is required";
     if (!email.includes("@")) newErrors.email = "Invalid email address";
+    if (!contact) newErrors.contact = "Contact number is required";
+    if (contact && !/^\d{10,15}$/.test(contact))
+      newErrors.contact = "Invalid contact number";
     if (password.length < 6)
       newErrors.password = "Password must be at least 6 characters long";
     if (!password) newErrors.password = "Password is required";
@@ -74,7 +85,7 @@ export default function SignupPage() {
       return;
     }
     setIsLoading(true);
-    const isSuccess = await signup(email, password, username);
+    const isSuccess = await signup(email, password, username, contact);
     if (isSuccess) {
       showToast({
         message: "Check Your Email for Verification",
@@ -127,6 +138,20 @@ export default function SignupPage() {
             />
             {errors.email && (
               <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            )}
+          </div>
+
+          <div className="relative">
+            <FaPhone className="absolute left-3 top-4 text-gray-400" />
+            <input
+              type="tel"
+              placeholder="Contact Number"
+              className="w-full px-10 py-3 border border-gray-600 dark:bg-darkThemeSecondary rounded-lg focus:outline-none "
+              value={contact}
+              onChange={(e) => setContact(e.target.value)}
+            />
+            {errors.contact && (
+              <p className="text-red-500 text-sm mt-1">{errors.contact}</p>
             )}
           </div>
 

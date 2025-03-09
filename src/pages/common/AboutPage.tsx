@@ -12,7 +12,7 @@ export default function AboutPage() {
           <img
             src={Images.ourMission}
             alt="Our Mission"
-            className="w-full md:w-[40%] lg:w-[30%] xl:w-[25%] h-auto rounded-lg shadow-md"
+            className="w-full md:w-[40%] lg:w-[30%] xl:w-[25%] h-auto rounded-lg "
           />
           <p className="text-base sm:text-lg text-left mb-6 sm:mb-8 md:mb-10 leading-relaxed">
             Our mission is to provide expert consultation services online,
@@ -40,7 +40,7 @@ export default function AboutPage() {
           <img
             src={Images.ourVision}
             alt="Our Vision"
-            className="w-full md:hidden rounded-lg shadow-md"
+            className="w-full md:hidden rounded-lg "
           />
           <p className="text-base sm:text-lg text-left mb-6 sm:mb-8 md:mb-10 md:order-1 lg:order-1 leading-relaxed">
             Our vision is to revolutionize the online consultation landscape by
@@ -59,7 +59,7 @@ export default function AboutPage() {
           <img
             src={Images.ourVision}
             alt="Our Vision"
-            className="w-full max-md:hidden md:w-[40%] lg:w-[30%] xl:w-[25%] h-auto md:order-2 lg:order-2 rounded-lg shadow-md"
+            className="w-full max-md:hidden md:w-[40%] lg:w-[30%] xl:w-[25%] h-auto md:order-2 lg:order-2 rounded-lg "
           />
         </div>
 
@@ -73,7 +73,7 @@ export default function AboutPage() {
           <img
             src={Images.ourTeam}
             alt="Our Team"
-            className="w-full md:w-[40%] lg:w-[30%] xl:w-[25%] h-auto rounded-lg shadow-md"
+            className="w-full md:w-[40%] lg:w-[30%] xl:w-[25%] h-auto rounded-lg "
           />
           <p className="text-base sm:text-lg text-left mb-6 sm:mb-8 md:mb-10 leading-relaxed">
             Our team consists of experienced technology professionals, industry

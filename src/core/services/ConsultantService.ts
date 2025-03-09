@@ -10,11 +10,20 @@ import {
   DocumentData,
   where,
   orderBy,
+  addDoc,
+  setDoc,
+  serverTimestamp,
+  Timestamp,
 } from "firebase/firestore";
-import { db } from "../config/Firebase";
+import { auth, db, storage } from "../config/Firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Consultant, ConsultantUser, User } from "../../types/Users";
 import { Services } from "../../types/Services";
 import { Rating, RatingsWithUserName } from "../../types/Ratings";
+import {
+  ApplicationFormWithMetaData,
+  NewConsultantForm,
+} from "../../types/Consultant";
 import {
   CONSULTANTS_PER_PAGE,
   RATINGS_PER_PAGE,
@@ -283,7 +292,7 @@ export const getPaginatedConsultantRatings = async (
 
     const ratingsWithUserNames = await Promise.all(
       ratingsData.map(async (rating) => {
-        const userName = await getRatingUserName(rating.uid);
+        const userName = await getUserName(rating.uid);
         return {
           ...rating,
           userName,
@@ -300,11 +309,20 @@ export const getPaginatedConsultantRatings = async (
   }
 };
 
-export const getRatingUserName = async (uid: string): Promise<string> => {
+export const getUserName = async (uid: string): Promise<string> => {
   const userDocRef = doc(db, "users", uid);
   const userDoc = await getDoc(userDocRef);
   if (userDoc.exists()) {
     return userDoc.data()?.userName;
+  }
+  return "";
+};
+
+export const getContact = async (uid: string): Promise<string> => {
+  const userDocRef = doc(db, "users", uid);
+  const userDoc = await getDoc(userDocRef);
+  if (userDoc.exists()) {
+    return userDoc.data()?.contact;
   }
   return "";
 };
@@ -397,5 +415,103 @@ export const getAllPaginatedConsultants = async (
   } catch (error) {
     console.error("Error fetching consultants:", error);
     return { consultants: [], lastDoc: null };
+  }
+};
+
+export const submitApplication = async (
+  bio: string,
+  experience: string,
+  selectedServices: string[],
+  resume: File
+): Promise<boolean> => {
+  const user = auth.currentUser;
+  if (!user) return false;
+  const uid = user.uid;
+  try {
+    const fileExtension = resume.name.split(".").pop();
+    const fileName = `resume-${Date.now()}.${fileExtension}`;
+    const storageRef = ref(storage, `applications/${uid}/${fileName}`);
+
+    const uploadResult = await uploadBytes(storageRef, resume);
+
+    const downloadURL = await getDownloadURL(uploadResult.ref);
+
+    const applicationRef = await addDoc(collection(db, "applications"), {
+      bio,
+      experience,
+      services: selectedServices,
+      resume: downloadURL,
+      uid,
+      status: "pending",
+    });
+
+    const applicationData: NewConsultantForm = {
+      bio,
+      experience,
+      services: selectedServices,
+      resume: downloadURL,
+      uid,
+      status: "pending",
+      aid: applicationRef.id,
+      timestamp: serverTimestamp(),
+    };
+
+    await setDoc(applicationRef, applicationData, { merge: true });
+
+    return true;
+  } catch (error) {
+    console.error("Error submitting application:", error);
+    return false;
+  }
+};
+
+export const canApplyConsultant = async (): Promise<{
+  days: number;
+  hours: number;
+  minutes: number;
+} | null> => {
+  const user = auth.currentUser;
+  if (!user) return null;
+  const uid = user.uid;
+  try {
+    const applicationsRef = query(
+      collection(db, "applications"),
+      where("uid", "==", uid)
+    );
+    const snapshot = await getDocs(applicationsRef);
+    if (snapshot.empty) {
+      return null;
+    }
+    const doc = snapshot.docs[0];
+    const docData = doc.data() as ApplicationFormWithMetaData;
+    const timestamp = (docData.timestamp as Timestamp).toDate();
+    const currentDate = new Date();
+
+    const twoDaysLater = new Date(
+      timestamp.getTime() + 2 * 24 * 60 * 60 * 1000
+    );
+
+    if (currentDate < twoDaysLater) {
+      const differenceInMilliseconds =
+        twoDaysLater.getTime() - currentDate.getTime();
+      const differenceInDays = Math.floor(
+        differenceInMilliseconds / (1000 * 3600 * 24)
+      );
+      const differenceInHours = Math.floor(
+        (differenceInMilliseconds % (1000 * 3600 * 24)) / (1000 * 3600)
+      );
+      const differenceInMinutes = Math.floor(
+        (differenceInMilliseconds % (1000 * 3600)) / (1000 * 60)
+      );
+      return {
+        days: differenceInDays,
+        hours: differenceInHours,
+        minutes: differenceInMinutes,
+      };
+    }
+    return null;
+  } catch (e) {
+    console.error("Error checking if user can apply as consultant:", e);
+    return null;
   }
 };

@@ -5,7 +5,7 @@ import {
   fetchConsultantById,
 } from "../../core/services/ConsultantService";
 import { ConsultantUser } from "../../types/Users";
-import { FaSpinner, FaCalendarAlt } from "react-icons/fa";
+import { FaSpinner, FaCalendarAlt, FaPhone } from "react-icons/fa";
 import { Images } from "../../resources/Images";
 import { Services } from "../../types/Services";
 import { Routes } from "../../utils/Routes";
@@ -17,14 +17,14 @@ export default function ConsultantProfile() {
   const [services, setServices] = useState<Services[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [servicesLoading, setServicesLoading] = useState<boolean>(false);
-  const { id, cid } = useParams<{ id: string; cid: string }>();
+  const { id, cid } = useParams<{ id?: string; cid: string }>();
   const navigate = useNavigate();
 
   const fetchConsultant = useCallback(async () => {
-    if (!cid || !id) return;
+    if (!cid && id) return;
     setIsLoading(true);
     try {
-      const response = await fetchConsultantById(cid);
+      const response = await fetchConsultantById(cid!);
       setConsultant(response);
 
       if (response?.services && response.services.length > 0) {
@@ -165,6 +165,26 @@ export default function ConsultantProfile() {
                   </p>
                   <p className="text-xl font-bold text-textHeading dark:text-white">
                     {consultant.experience}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Information */}
+            <div className="bg-white dark:bg-darkThemeCard rounded-xl shadow-customLight p-6">
+              <h2 className="text-xl font-bold text-textHeading dark:text-white mb-4">
+                Contact Information
+              </h2>
+              <div className="flex items-center gap-3 p-4 bg-cardBg dark:bg-darkThemeSecondary rounded-lg">
+                <div className="w-12 h-12 bg-primaryRed bg-opacity-10 rounded-full flex items-center justify-center">
+                  <FaPhone className="text-primaryRed" size={20} />
+                </div>
+                <div>
+                  <p className="text-textMuted dark:text-textMuted-dark text-sm">
+                    Contact
+                  </p>
+                  <p className="text-xl font-bold text-textHeading dark:text-white break-words">
+                    {consultant.contact || "No contact information provided."}
                   </p>
                 </div>
               </div>

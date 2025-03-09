@@ -10,6 +10,7 @@ export default {
       boxShadow: {
         customLight: "0px 2px 10px rgba(0,0,0,0.2)",
         profileCard: "0px 4px 12px rgba(0,0,0,0.08)",
+        formInput: "0px 1px 3px rgba(0,0,0,0.05)",
       },
       colors: {
         primaryRed: "#ed2a4f",
@@ -37,6 +38,17 @@ export default {
         reviewCard: {
           DEFAULT: "#f3f4f6", // gray-100
           dark: "#262626",
+        },
+        formBorder: {
+          DEFAULT: "#e5e7eb", // gray-200
+          dark: "#374151", // gray-700
+          focus: "#ed2a4f", // primaryRed
+        },
+        formBg: {
+          DEFAULT: "#ffffff",
+          dark: "#262626",
+          selected: "#f9fafb",
+          selectedDark: "#1f1f1f",
         },
       },
       borderWidth: {

@@ -6,6 +6,7 @@ export type User = {
   uid: string;
   type: UserType;
   photoURL?: string;
+  contact: string;
 };
 
 export type UserType = "admin" | "user" | "consultant";
