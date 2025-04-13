@@ -13,6 +13,9 @@ export const Routes = {
   ourConsultants: "/our-consultants",
   userDashboard: "/user-dashboard",
   settings: "/settings",
+  booking: "/booking",
+  videoCall: "/video-call",
+  yourBookings: "/your-bookings",
 };
 
 export const AdminRoutes = {

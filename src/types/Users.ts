@@ -18,6 +18,7 @@ export type Consultant = {
   reviewCount: number;
   avgRating: number;
   services: string[];
+  kudos: string[];
 };
 
 export type ConsultantUser = User & Consultant;
