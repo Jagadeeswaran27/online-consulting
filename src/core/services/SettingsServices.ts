@@ -63,6 +63,22 @@ export const fetchUserGeneralSettings =
       return null;
     }
   };
+export const fetchUserGeneralSettingsForId = async (
+  id: string
+): Promise<GeneralSettings | null> => {
+  try {
+    const generalSettingsRef = doc(db, "users", id, "settings", "general");
+    const docSnap = await getDoc(generalSettingsRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data() as GeneralSettings;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching user general settings:", error);
+    return null;
+  }
+};
 
 export const changeCountry = async (countryCode: string): Promise<boolean> => {
   if (!auth.currentUser) return false;

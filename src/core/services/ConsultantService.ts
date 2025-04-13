@@ -309,6 +309,40 @@ export const getPaginatedConsultantRatings = async (
   }
 };
 
+export const getConsultantRatings = async (
+  consultantId: string
+): Promise<RatingsWithUserName[]> => {
+  try {
+    const reviewsRef = collection(db, `consultants/${consultantId}/reviews`);
+
+    const snapshot = await getDocs(reviewsRef);
+
+    if (snapshot.empty) {
+      return [];
+    }
+
+    const ratingsData = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as Rating),
+    }));
+
+    const ratingsWithUserNames = await Promise.all(
+      ratingsData.map(async (rating) => {
+        const userName = await getUserName(rating.uid);
+        return {
+          ...rating,
+          userName,
+        } as RatingsWithUserName;
+      })
+    );
+
+    return ratingsWithUserNames;
+  } catch (error) {
+    console.error("Error fetching consultant ratings:", error);
+    return [];
+  }
+};
+
 export const getUserName = async (uid: string): Promise<string> => {
   const userDocRef = doc(db, "users", uid);
   const userDoc = await getDoc(userDocRef);

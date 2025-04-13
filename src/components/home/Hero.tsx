@@ -6,6 +6,7 @@ import { AuthContext } from "../../store/context/auth";
 
 export default function Hero() {
   const { user } = useContext(AuthContext);
+  const userType = user?.type;
   return (
     <div
       className="flex flex-col text-white gap-5 sm:gap-10 items-center justify-center py-10 sm:py-20 px-4 sm:px-0 max-sm:min-h-[500px] max-sm:max-h-[100vh] min-h-[calc(100vh-80px)] max-h-[calc(100vh-80px)]"
@@ -22,7 +23,18 @@ export default function Hero() {
         consultation through our inbuilt feature. Leave a review after your
         session!
       </p>
-      {user?.type !== "admin" ? (
+      {userType === "admin" || userType === "consultant" ? (
+        <Link
+          to={
+            userType == "admin"
+              ? Routes.adminDashboard
+              : Routes.consultantDashboard
+          }
+          className="bg-primaryRed text-white py-2 px-5 font-semibold hover:bg-secondaryRed hover:text-white transition-all duration-300 mt-4"
+        >
+          Go to Dashboard
+        </Link>
+      ) : (
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-10 mt-4">
           <Link
             to={Routes.services}
@@ -37,13 +49,6 @@ export default function Hero() {
             Become a Consultant
           </Link>
         </div>
-      ) : (
-        <Link
-          to={Routes.adminDashboard}
-          className="bg-primaryRed text-white py-2 px-5 font-semibold hover:bg-secondaryRed hover:text-white transition-all duration-300 mt-4"
-        >
-          Go to Dashboard
-        </Link>
       )}
     </div>
   );

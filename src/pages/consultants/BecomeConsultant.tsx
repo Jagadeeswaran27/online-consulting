@@ -119,9 +119,9 @@ export default function BecomeConsultant() {
       return;
     }
 
-    const canApply = await canApplyConsultant();
-    if (canApply) {
-      const { days, hours, minutes } = canApply;
+    const cannotApply = await canApplyConsultant();
+    if (cannotApply) {
+      const { days, hours, minutes } = cannotApply;
       showToast({
         message: `You can apply again in ${days} days, ${hours} hours, and ${minutes} minutes.`,
         type: "error",
@@ -365,34 +365,6 @@ export default function BecomeConsultant() {
                 </div>
               </div>
             </div>
-
-            {/* Terms and Conditions */}
-            {/* <div className="flex items-start pt-4">
-              <div className="flex items-center h-5">
-                <input
-                  id="terms"
-                  type="checkbox"
-                  className="w-4 h-4 text-primaryRed border-gray-300 rounded focus:ring-primaryRed"
-                  required
-                />
-              </div>
-              <div className="ml-3 text-sm">
-                <label
-                  htmlFor="terms"
-                  className="text-textMuted dark:text-textMuted-dark"
-                >
-                  I agree to the{" "}
-                  <a href="#" className="text-primaryRed hover:underline">
-                    Terms of Service
-                  </a>{" "}
-                  and{" "}
-                  <a href="#" className="text-primaryRed hover:underline">
-                    Privacy Policy
-                  </a>
-                </label>
-              </div>
-            </div> */}
-
             {/* Submit Button */}
             <div className="pt-4">
               <PrimaryAuthButton

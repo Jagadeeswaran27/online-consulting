@@ -27,6 +27,9 @@ import ServicePage from "./pages/common/ServicePage";
 import ConsultantProfile from "./pages/common/ConsultantProfile";
 import ConsultantsShowCase from "./pages/common/ConsultantsShowCase";
 import BecomeConsultant from "./pages/consultants/BecomeConsultant";
+import BookingPage from "./pages/common/BookingPage";
+import VideoCall from "./components/video/VideoCall";
+import YourBookings from "./pages/common/YourBookings";
 
 export default function App() {
   return (
@@ -83,6 +86,11 @@ export default function App() {
             />
 
             <Route
+              path={AppRoutes.booking}
+              element={<ProtectedRoute element={<BookingPage />} />}
+            />
+
+            <Route
               path={AppRoutes.becomeConsultant}
               element={<ProtectedRoute element={<BecomeConsultant />} />}
             />
@@ -90,6 +98,14 @@ export default function App() {
             <Route
               path={AppRoutes.consultantDashboard}
               element={<ProtectedRoute element={<Dashboad />} />}
+            />
+            <Route
+              path={AppRoutes.videoCall}
+              element={<ProtectedRoute element={<VideoCall />} />}
+            />
+            <Route
+              path={AppRoutes.yourBookings}
+              element={<ProtectedRoute element={<YourBookings />} />}
             />
             <Route
               path={AppRoutes.adminDashboard}

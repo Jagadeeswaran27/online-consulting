@@ -79,6 +79,14 @@ export default function Header() {
           >
             Our Consultants
           </Link>
+          {user?.type == "user" && (
+            <Link
+              to={Routes.yourBookings}
+              className="hover:text-primaryRed cursor-pointer transition-all duration-300"
+            >
+              Your Bookings
+            </Link>
+          )}
         </nav>
       </div>
       {!loading && (
@@ -183,6 +191,15 @@ export default function Header() {
             >
               Our Consultants
             </Link>
+            {user?.type == "user" && (
+              <Link
+                to={Routes.yourBookings}
+                onClick={toggleMenu}
+                className="text-lg hover:text-primaryRed pb-1  transition-all duration-300"
+              >
+                Your Bookings
+              </Link>
+            )}
           </nav>
 
           <div className="mt-auto px-6 py-6 border-t dark:border-gray-700">

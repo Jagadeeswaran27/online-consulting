@@ -11,12 +11,16 @@ import { Services } from "../../types/Services";
 import { Routes } from "../../utils/Routes";
 import ConsultantRatings from "../../components/services/ConsultantRatings";
 import ConsultantProfileCard from "../../components/services/ConsultantProfileCard";
+import { GeneralSettings } from "../../types/Settings";
+import { fetchUserGeneralSettings } from "../../core/services/SettingsServices";
 
 export default function ConsultantProfile() {
   const [consultant, setConsultant] = useState<ConsultantUser | null>(null);
   const [services, setServices] = useState<Services[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [servicesLoading, setServicesLoading] = useState<boolean>(false);
+  const [generalSettings, setGeneralSettings] =
+    useState<GeneralSettings | null>(null);
   const { id, cid } = useParams<{ id?: string; cid: string }>();
   const navigate = useNavigate();
 
@@ -26,6 +30,10 @@ export default function ConsultantProfile() {
     try {
       const response = await fetchConsultantById(cid!);
       setConsultant(response);
+
+      const settings = await fetchUserGeneralSettings();
+
+      setGeneralSettings(settings);
 
       if (response?.services && response.services.length > 0) {
         setServicesLoading(true);
@@ -43,6 +51,13 @@ export default function ConsultantProfile() {
   useEffect(() => {
     fetchConsultant();
   }, [fetchConsultant]);
+
+  const handleBookConsultation = () => {
+    const params = new URLSearchParams();
+    if (cid) params.append("cid", cid);
+    if (id) params.append("sid", id);
+    navigate(`${Routes.booking}?${params.toString()}`);
+  };
 
   if (isLoading) {
     return (
@@ -76,13 +91,11 @@ export default function ConsultantProfile() {
       <div className="container mx-auto max-w-6xl px-4 -mt-16 md:-mt-24">
         <div className="bg-white dark:bg-darkThemeCard rounded-xl shadow-profileCard mb-8">
           <div className="p-6 md:p-8">
-            <ConsultantProfileCard consultant={consultant} />
-
-            <div className="mt-6 flex justify-center md:hidden">
-              <button className="w-full px-6 py-3 bg-primaryRed hover:bg-secondaryRed text-white rounded-lg font-medium transition-colors shadow-md">
-                Book Consultation
-              </button>
-            </div>
+            <ConsultantProfileCard
+              consultantGenerealSettings={generalSettings}
+              onBook={handleBookConsultation}
+              consultant={consultant}
+            />
           </div>
         </div>
 
