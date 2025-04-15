@@ -9,4 +9,5 @@ export type Booking = {
   scheduledAt: Timestamp;
   mode: ContactPreference;
   callId: string;
+  inCall: string[];
 };

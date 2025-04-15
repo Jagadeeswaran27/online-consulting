@@ -28,6 +28,7 @@ import {
   CONSULTANTS_PER_PAGE,
   RATINGS_PER_PAGE,
 } from "../../constants/LazyLoadingLimits";
+import { getUserName } from "./UserService";
 // import { Rating, RatingsWithUserName } from "../../types/Ratings";
 
 export const fetchConsultants = async (
@@ -341,24 +342,6 @@ export const getConsultantRatings = async (
     console.error("Error fetching consultant ratings:", error);
     return [];
   }
-};
-
-export const getUserName = async (uid: string): Promise<string> => {
-  const userDocRef = doc(db, "users", uid);
-  const userDoc = await getDoc(userDocRef);
-  if (userDoc.exists()) {
-    return userDoc.data()?.userName;
-  }
-  return "";
-};
-
-export const getContact = async (uid: string): Promise<string> => {
-  const userDocRef = doc(db, "users", uid);
-  const userDoc = await getDoc(userDocRef);
-  if (userDoc.exists()) {
-    return userDoc.data()?.contact;
-  }
-  return "";
 };
 
 export const getAllTopConsultants = async (): Promise<ConsultantUser[]> => {

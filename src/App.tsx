@@ -10,7 +10,6 @@ import "react-toastify/dist/ReactToastify.css";
 import ServicesPage from "./pages/common/ServicesPage";
 import ProtectedRoute from "./store/protection/ProtectedRoute";
 import ScrollToTop from "./components/common/ScrollToTop";
-import Dashboad from "./pages/consultants/ConsultantDashboad";
 import { AdminRoutes, Routes as AppRoutes } from "./utils/Routes";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminProtection from "./store/protection/AdminProtection";
@@ -30,6 +29,8 @@ import BecomeConsultant from "./pages/consultants/BecomeConsultant";
 import BookingPage from "./pages/common/BookingPage";
 import VideoCall from "./components/video/VideoCall";
 import YourBookings from "./pages/common/YourBookings";
+import ConsultantDashboard from "./pages/consultants/ConsultantDashboad";
+import ConsultantProtection from "./store/protection/ConsultantProtection";
 
 export default function App() {
   return (
@@ -97,7 +98,9 @@ export default function App() {
 
             <Route
               path={AppRoutes.consultantDashboard}
-              element={<ProtectedRoute element={<Dashboad />} />}
+              element={
+                <ConsultantProtection element={<ConsultantDashboard />} />
+              }
             />
             <Route
               path={AppRoutes.videoCall}
