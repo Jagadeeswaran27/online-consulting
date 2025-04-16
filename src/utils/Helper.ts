@@ -80,5 +80,7 @@ export const formatBookingTime = (timestamp: Timestamp) => {
 export const isUpcoming = (timestamp: Timestamp) => {
   if (!timestamp) return false;
   const now = new Date();
-  return timestamp.toDate() > now;
+  const timestampDate = timestamp.toDate();
+  const adjustedTimestamp = new Date(timestampDate.getTime() + 30 * 60 * 1000);
+  return adjustedTimestamp > now;
 };
