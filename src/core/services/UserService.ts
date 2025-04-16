@@ -34,3 +34,30 @@ export const updateKudosForConsultant = async (
     return false;
   }
 };
+
+export const getUserName = async (uid: string): Promise<string> => {
+  const userDocRef = doc(db, "users", uid);
+  const userDoc = await getDoc(userDocRef);
+  if (userDoc.exists()) {
+    return userDoc.data()?.userName;
+  }
+  return "";
+};
+
+export const getContact = async (uid: string): Promise<string> => {
+  const userDocRef = doc(db, "users", uid);
+  const userDoc = await getDoc(userDocRef);
+  if (userDoc.exists()) {
+    return userDoc.data()?.contact;
+  }
+  return "";
+};
+
+export const getPhotoUrl = async (uid: string): Promise<string> => {
+  const userDocRef = doc(db, "users", uid);
+  const userDoc = await getDoc(userDocRef);
+  if (userDoc.exists()) {
+    return userDoc.data()?.photoURL;
+  }
+  return "";
+};

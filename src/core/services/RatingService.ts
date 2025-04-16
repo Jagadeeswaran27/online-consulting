@@ -6,9 +6,12 @@ import {
   doc,
   getDoc,
   increment,
+  query,
+  where,
+  getDocs,
 } from "firebase/firestore";
-import { Rating } from "../../types/Ratings";
-import { db } from "../config/Firebase";
+import { Rating, RatingsMapping } from "../../types/Ratings";
+import { auth, db } from "../config/Firebase";
 
 export const addRating = async (
   cid: string,
@@ -24,7 +27,13 @@ export const addRating = async (
     const docRef = await addDoc(reviewsCollectionRef, ratingWithTimestamp);
 
     await updateDoc(docRef, { rid: docRef.id });
-
+    const reviewMappingDoc = {
+      cid: cid,
+      uid: rating.uid,
+      rid: docRef.id,
+    } as RatingsMapping;
+    const reviewMappingRef = collection(db, "review-mapping");
+    await addDoc(reviewMappingRef, reviewMappingDoc);
     const consultantDocRef = doc(db, "consultants", cid);
     const consultantDoc = await getDoc(consultantDocRef);
 
@@ -46,6 +55,38 @@ export const addRating = async (
     return docRef.id;
   } catch (error) {
     console.error("Error adding rating:", error);
+    throw error;
+  }
+};
+
+export const fetchUserRatings = async (): Promise<RatingsMapping[]> => {
+  if (!auth.currentUser) return [];
+  const uid = auth.currentUser.uid;
+  try {
+    const reviewMappingRef = collection(db, "review-mapping");
+    const reviewMappingQuery = query(reviewMappingRef, where("uid", "==", uid));
+    const reviewMappingSnapshot = await getDocs(reviewMappingQuery);
+
+    const userRatings: RatingsMapping[] = [];
+
+    const fetchPromises = reviewMappingSnapshot.docs.map(async (mappingDoc) => {
+      const mappingData = mappingDoc.data() as RatingsMapping;
+      const { cid, rid } = mappingData;
+
+      const reviewDocRef = doc(db, `consultants/${cid}/reviews/${rid}`);
+      const reviewDoc = await getDoc(reviewDocRef);
+
+      if (reviewDoc.exists()) {
+        const reviewData = reviewDoc.data() as RatingsMapping;
+        userRatings.push({ ...reviewData, cid }); // Include cid and rid in the userRatings array
+      }
+    });
+
+    await Promise.all(fetchPromises);
+
+    return userRatings;
+  } catch (error) {
+    console.error("Error fetching user ratings:", error);
     throw error;
   }
 };

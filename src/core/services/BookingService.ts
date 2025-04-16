@@ -8,9 +8,14 @@ import {
   where,
   onSnapshot,
   QuerySnapshot,
+  getDoc,
+  arrayUnion,
+  updateDoc,
+  arrayRemove,
 } from "firebase/firestore";
-import { db } from "../config/Firebase";
+import { auth, db } from "../config/Firebase";
 import { Booking } from "../../types/Booking";
+import { getUserName } from "./UserService";
 
 export async function checkBookingSlot(
   cid: string,
@@ -87,6 +92,62 @@ export async function addBooking(booking: Booking): Promise<boolean> {
   }
 }
 
+export async function addUserIdInBookingCall(bid: string): Promise<boolean> {
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      console.error("User not authenticated");
+      return false;
+    }
+
+    const uid = user.uid;
+    const bookingDocRef = doc(db, "bookings", bid);
+    const bookingDoc = await getDoc(bookingDocRef);
+
+    if (!bookingDoc.exists()) {
+      console.error("Booking not found");
+      return false;
+    }
+
+    await updateDoc(bookingDocRef, {
+      inCall: arrayUnion(uid),
+    });
+
+    return true;
+  } catch (error) {
+    console.error("Error adding user in booking call: ", error);
+    return false;
+  }
+}
+
+export async function removeUserIdInBookingCall(bid: string): Promise<boolean> {
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      console.error("User not authenticated");
+      return false;
+    }
+
+    const uid = user.uid;
+    const bookingDocRef = doc(db, "bookings", bid);
+    const bookingDoc = await getDoc(bookingDocRef);
+
+    if (!bookingDoc.exists()) {
+      console.error("Booking not found");
+      return false;
+    }
+
+    await updateDoc(bookingDocRef, {
+      inCall: arrayRemove(uid),
+    });
+
+    return true;
+  } catch (error) {
+    console.error("Error adding user in booking call: ", error);
+    return false;
+  }
+}
+
 export async function fetchBookingsByDate(
   cid: string,
   date: Date
@@ -155,6 +216,39 @@ export function subscribeToBookingsByDate(
     },
     (error) => {
       console.error("Error listening to bookings: ", error);
+    }
+  );
+
+  return unsubscribe;
+}
+
+export function subscribeToBookingInCall(
+  bid: string,
+  callback: (userNames: string[]) => void
+): () => void {
+  const bookingDocRef = doc(db, "bookings", bid);
+
+  const unsubscribe = onSnapshot(
+    bookingDocRef,
+    async (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        const inCall = data.inCall || [];
+
+        const userNames = await Promise.all(
+          inCall.map(async (uid: string) => {
+            return await getUserName(uid);
+          })
+        );
+
+        callback(userNames);
+      } else {
+        console.error("Booking document does not exist");
+        callback([]);
+      }
+    },
+    (error) => {
+      console.error("Error listening to booking inCall array: ", error);
     }
   );
 

@@ -3,7 +3,7 @@ export type SettingsTabs =
   | "General"
   | "Ratings & Reviews"
   | "Liked Consultants"
-  | "Bookings";
+  | "Past Bookings";
 
 export type Theme = "light" | "dark";
 

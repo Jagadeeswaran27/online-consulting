@@ -17,6 +17,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import { Routes } from "../../utils/Routes";
 import { AuthContext } from "../../store/context/auth";
+import {
+  addUserIdInBookingCall,
+  removeUserIdInBookingCall,
+} from "../../core/services/BookingService";
 
 type GetStreamTokenResult = {
   token: string;
@@ -34,17 +38,22 @@ const VideoCall = () => {
   const [searchParams] = useSearchParams();
 
   const callId = searchParams.get("callId");
-  const consultantId = searchParams.get("consultantId");
+  const bookingId = searchParams.get("bookingId");
 
   useEffect(() => {
     const setupStream = async () => {
-      if (!callId) {
+      if (!callId || !bookingId) {
         navigate(Routes.home);
         return;
       }
 
       try {
         setIsLoading(true);
+        const isAdded = await addUserIdInBookingCall(bookingId);
+        if (!isAdded) {
+          console.log("Error adding user to booking call");
+        }
+
         const getStreamToken = httpsCallable(functions, "getStreamToken");
         const result = await getStreamToken();
         const { token } = result.data as GetStreamTokenResult;
@@ -84,17 +93,39 @@ const VideoCall = () => {
     setupStream();
 
     return () => {
-      if (call) {
-        call.leave().catch(console.error);
-      }
-      if (client) {
-        client.disconnectUser().catch(console.error);
-      }
+      cleanup();
     };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!callId || !consultantId) {
+  const cleanup = async () => {
+    if (call) {
+      try {
+        await call.leave();
+      } catch (err) {
+        console.error("Error leaving call:", err);
+      }
+    }
+
+    if (client) {
+      try {
+        await client.disconnectUser();
+      } catch (err) {
+        console.error("Error disconnecting client:", err);
+      }
+    }
+
+    if (bookingId) {
+      try {
+        await removeUserIdInBookingCall(bookingId);
+      } catch (err) {
+        console.error("Error removing user from booking call:", err);
+      }
+    }
+  };
+
+  if (!callId || !bookingId) {
     navigate(
       user?.type === "consultant"
         ? Routes.consultantDashboard

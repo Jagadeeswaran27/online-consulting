@@ -13,8 +13,8 @@ import {
   ApplicationFormWithMetaData,
   NewConsultantForm,
 } from "../../types/Consultant";
-import { getContact, getUserName } from "./ConsultantService";
 import { ConsultantUser, User } from "../../types/Users";
+import { getContact, getUserName } from "./UserService";
 
 export const fetchPendingApplications = async (): Promise<
   ApplicationFormWithMetaData[]

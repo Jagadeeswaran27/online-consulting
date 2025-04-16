@@ -3,7 +3,6 @@ import { auth } from "../../core/config/Firebase";
 import {
   fetchConsultantById,
   getConsultantRatings,
-  getUserName,
 } from "../../core/services/ConsultantService";
 import { fetchConsultantBookings } from "../../core/services/BookingService";
 import { fetchService as getServiceDetails } from "../../core/services/ServiceManager";
@@ -17,17 +16,16 @@ import {
   FaCalendarAlt,
   FaThumbsUp,
   FaUser,
-  FaClock,
   FaVideo,
   FaPhoneAlt,
   FaChartLine,
 } from "react-icons/fa";
 import { isUpcoming } from "../../utils/Helper";
-import { formatBookingDate, formatBookingTime } from "../../utils/Helper";
+import { formatBookingDate } from "../../utils/Helper";
 import { format } from "date-fns";
-import { Link } from "react-router-dom";
-import { Images } from "../../resources/Images";
 import RenderStars from "../../components/services/RenderStars";
+import UpcomingBookingCard from "../../components/user-bookings/UpcomingBookingCard";
+import { getUserName } from "../../core/services/UserService";
 
 const ConsultantDashboard = () => {
   const [consultant, setConsultant] = useState<ConsultantUser | null>(null);
@@ -319,102 +317,14 @@ const ConsultantDashboard = () => {
                 new Date().toDateString() === bookingDate.toDateString();
 
               return (
-                <div
-                  key={booking.callId}
-                  className="bg-white dark:bg-darkThemeCard rounded-xl shadow-profileCard overflow-hidden border border-gray-100 dark:border-darkThemeSecondary hover:shadow-elevated transition-all duration-300"
-                >
-                  {/* Colored header based on consultation mode */}
-                  <div
-                    className={`h-2 ${
-                      booking.mode === "online"
-                        ? "bg-gradient-to-r from-gradientFrom to-gradientTo"
-                        : "bg-gradient-to-r from-blue-500 to-indigo-600"
-                    }`}
-                  ></div>
-
-                  <div className="p-6">
-                    <div className="flex items-start justify-between mb-5">
-                      <div>
-                        <span
-                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            isToday
-                              ? "bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300"
-                              : "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300"
-                          }`}
-                        >
-                          {isToday ? "Today" : "Upcoming"}
-                        </span>
-                        <span
-                          className={`ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            booking.mode === "online"
-                              ? "bg-red-100 text-primaryRed dark:bg-red-900/20 dark:text-red-300"
-                              : "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/20 dark:text-indigo-300"
-                          }`}
-                        >
-                          {booking.mode === "online" ? (
-                            <>
-                              <FaVideo className="mr-1" /> Online
-                            </>
-                          ) : (
-                            <>
-                              <FaPhoneAlt className="mr-1" /> Offline
-                            </>
-                          )}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="bg-cardBg dark:bg-cardBg-dark rounded-lg p-4 mb-5">
-                      <div className="flex items-center mb-3">
-                        <img
-                          src={service?.thumbnail || Images.placeholderImage}
-                          alt={service?.name}
-                          className="w-10 h-10 rounded-md object-cover mr-3"
-                          onError={(e) => {
-                            e.currentTarget.src = Images.placeholderImage;
-                          }}
-                        />
-                        <div>
-                          <h4 className="font-semibold text-textHeading dark:text-white">
-                            {service?.name || "Consultation Service"}
-                          </h4>
-                          <p className="text-xs text-textMuted dark:text-textMuted-dark">
-                            User ID: {booking.uid.substring(0, 8)}...
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-wrap items-center text-sm text-textMuted dark:text-textMuted-dark">
-                        <div className="flex items-center mr-4 mb-1">
-                          <FaCalendarAlt className="mr-1.5" />
-                          {formatBookingDate(booking.scheduledAt)}
-                        </div>
-                        <div className="flex items-center mb-1">
-                          <FaClock className="mr-1.5" />
-                          {formatBookingTime(booking.scheduledAt)}
-                        </div>
-                      </div>
-                    </div>
-
-                    {booking.mode === "online" && (
-                      <div className="mt-4">
-                        <Link
-                          to={`/video-call?callId=${booking.callId}&consultantId=${booking.cid}`}
-                          className="flex items-center justify-center w-full bg-primaryRed hover:bg-secondaryRed text-white font-medium py-3 px-4 rounded-lg transition-colors"
-                        >
-                          <FaVideo className="mr-2" />
-                          Join Video Call
-                        </Link>
-                      </div>
-                    )}
-
-                    {booking.mode === "offline" && (
-                      <div className="mt-4 flex items-center text-textBody dark:text-textBody-dark">
-                        <FaPhoneAlt className="mr-2 text-textMuted dark:text-textMuted-dark" />
-                        <span>Contact client directly</span>
-                      </div>
-                    )}
-                  </div>
+                <div key={booking.bid}>
+                  <UpcomingBookingCard
+                    booking={booking}
+                    consultant={consultant}
+                    service={service}
+                    isToday={isToday}
+                    isConsultant={true}
+                  />
                 </div>
               );
             })
@@ -509,7 +419,7 @@ const ConsultantDashboard = () => {
               </p>
             ) : (
               <div className="space-y-4">
-                {ratings.slice(0, 4).map((rating) => (
+                {ratings.slice(0, 3).map((rating) => (
                   <div
                     key={rating.rid}
                     className="border border-formBorder dark:border-formBorder-dark rounded-lg p-4 hover:bg-cardBg dark:hover:bg-darkThemeSecondary transition-colors"
@@ -538,7 +448,7 @@ const ConsultantDashboard = () => {
                   </div>
                 ))}
 
-                {ratings.length > 4 && (
+                {ratings.length > 3 && (
                   <div className="text-center pt-2">
                     <button className="text-primaryRed hover:text-secondaryRed font-medium text-sm">
                       View All Reviews

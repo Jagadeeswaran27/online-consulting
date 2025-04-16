@@ -192,6 +192,7 @@ export default function BookingPage() {
       scheduledAt: scheduledAt,
       mode: selectedMode!,
       callId: selectedMode == "online" ? generateCallId() : "",
+      inCall: [],
     };
     const isSlotAvailable = await checkBookingSlot(cid!, scheduledAt);
     if (!isSlotAvailable) {
