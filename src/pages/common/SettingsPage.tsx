@@ -8,6 +8,7 @@ import { SettingsTabs } from "../../types/Settings";
 import Profile from "../../components/settings/Profile";
 import General from "../../components/settings/General";
 import { Images } from "../../resources/Images";
+import UserRatings from "../../components/settings/UserRatings";
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<SettingsTabs>("Profile");
@@ -92,12 +93,12 @@ export default function SettingsPage() {
             Liked Consultants
           </div>
           <div
-            onClick={() => handleSelectTab("Bookings")}
+            onClick={() => handleSelectTab("Past Bookings")}
             className={`cursor-pointer px-4 pl-8 py-1 hover:text-primaryRed ${
-              activeTab === "Bookings" && "text-primaryRed"
+              activeTab === "Past Bookings" && "text-primaryRed"
             }`}
           >
-            Bookings
+            Past Bookings
           </div>
           <div
             onClick={handleLogout}
@@ -155,14 +156,14 @@ export default function SettingsPage() {
               Liked Consultants
             </button>
             <button
-              onClick={() => handleSelectTab("Bookings")}
+              onClick={() => handleSelectTab("Past Bookings")}
               className={`whitespace-nowrap px-3 py-1 rounded-full ${
-                activeTab === "Bookings"
+                activeTab === "Past Bookings"
                   ? "bg-primaryRed text-white"
                   : "bg-gray-200 dark:bg-darkThemeSecondary"
               }`}
             >
-              Bookings
+              Past Bookings
             </button>
           </div>
         </div>
@@ -174,13 +175,11 @@ export default function SettingsPage() {
         </h1>
         {activeTab === "Profile" && <Profile user={user!} />}
         {activeTab === "General" && <General />}
-        {activeTab === "Ratings & Reviews" && (
-          <div>Ratings & Reviews Content</div>
-        )}
+        {activeTab === "Ratings & Reviews" && <UserRatings />}
         {activeTab === "Liked Consultants" && (
           <div>Liked Consultants Content</div>
         )}
-        {activeTab === "Bookings" && <div>Bookings Content</div>}
+        {activeTab === "Past Bookings" && <div>Bookings Content</div>}
       </div>
     </div>
   );

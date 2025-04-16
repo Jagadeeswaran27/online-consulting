@@ -11,3 +11,7 @@ export type Rating = {
 export type RatingsWithUserName = Rating & {
   userName: string;
 };
+
+export type RatingsMapping = RatingsWithUserName & {
+  cid: string;
+};

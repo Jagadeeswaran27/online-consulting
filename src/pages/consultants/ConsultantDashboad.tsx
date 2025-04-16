@@ -419,7 +419,7 @@ const ConsultantDashboard = () => {
               </p>
             ) : (
               <div className="space-y-4">
-                {ratings.slice(0, 4).map((rating) => (
+                {ratings.slice(0, 3).map((rating) => (
                   <div
                     key={rating.rid}
                     className="border border-formBorder dark:border-formBorder-dark rounded-lg p-4 hover:bg-cardBg dark:hover:bg-darkThemeSecondary transition-colors"
@@ -448,7 +448,7 @@ const ConsultantDashboard = () => {
                   </div>
                 ))}
 
-                {ratings.length > 4 && (
+                {ratings.length > 3 && (
                   <div className="text-center pt-2">
                     <button className="text-primaryRed hover:text-secondaryRed font-medium text-sm">
                       View All Reviews

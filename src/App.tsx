@@ -31,6 +31,7 @@ import VideoCall from "./components/video/VideoCall";
 import YourBookings from "./pages/common/YourBookings";
 import ConsultantDashboard from "./pages/consultants/ConsultantDashboad";
 import ConsultantProtection from "./store/protection/ConsultantProtection";
+import OnlyUserProtection from "./store/protection/OnlyUserProtection";
 
 export default function App() {
   return (
@@ -93,7 +94,7 @@ export default function App() {
 
             <Route
               path={AppRoutes.becomeConsultant}
-              element={<ProtectedRoute element={<BecomeConsultant />} />}
+              element={<OnlyUserProtection element={<BecomeConsultant />} />}
             />
 
             <Route
